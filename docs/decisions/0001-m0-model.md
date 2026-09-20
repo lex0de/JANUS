@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # ADR 0001: bounded contract experiment
 
 Status: EXPERIMENTAL / PROPOSED, not maintainer accepted.
@@ -12,6 +13,16 @@ slots. A trusted test driver labels owner, backend and world calls; integers are
 references inside this model, never unforgeable capabilities. Each successful
 command is one serialisation point; failed commands leave all state unchanged.
 The caller must serialise access. No locks, callbacks, blocking or timeouts occur.
+
+M0.1, 20 September 2026: maintainer review found implicit delegability inconsistent
+with whitepaper §5.2. A checked boolean now records explicit delegation authority
+on each grant. Zero is non-delegable by default; OWNER must request one to permit
+delegation. A permitted parent may grant either value to a child; a non-delegable
+parent cannot create children. Invalid values reject atomically. Existing object,
+rights, incarnation, ancestor and revocation checks still apply. This required
+correction does not approve the representation as a stable ABI or storage format.
+An extensible policy framework is deferred; one attenuable bit meets this bounded
+experiment's need. See docs/evidence/m0-1.md for validation and review.
 
 Propose deny-new revocation followed by draining admitted work; descendants are
 checked through their ancestor chain. Restore never restores grants or external

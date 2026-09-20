@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # JANUS
 
 A proposed personal operating system of isolated worlds, explicit authority,
@@ -8,7 +9,7 @@ https://www.cryogenix.org
 
 ## Current state
 
-**M0 READY FOR REVIEW**: candidate contracts, threat model and a bounded C17
+**M0 READY FOR SECOND REVIEW**: candidate contracts, threat model and a bounded C17
 reference model with executable tests. No JANUS kernel, secure capability
 runtime, or working guest appliance is shipped here. Start with the
 [whitepaper](docs/architecture/JANUS_Whitepaper_v0.1.md) and
@@ -55,10 +56,15 @@ The whitepaper is retained unmodified. `docs/SOURCES.md` identifies the source
 materials and external tool documentation used for this bootstrap. Supplied PDF, DOCX and PNG assets are preserved without alteration; no new
 artwork was generated. The canonical design source is the architecture Markdown.
 
-Release licensing is undecided. See `LICENSING.md`. Private repository creation
-is the conservative bootstrap default, not a public open-source release.
+JANUS uses mixed licensing: independently authored software is ISC; documentation
+and the whitepaper are CC BY 4.0; upstream terms are preserved for imported or
+derived material. Name/logo rights are retained, including `docs/JANUS_logo.png`.
+See [licensing scope](LICENSING.md), [licence overview](LICENSE), and
+[branding policy](TRADEMARKS.md). The repository remains PRIVATE; this decision
+does not authorise a public release.
 
 See [candidate contracts](docs/contracts/README.md), [M0 evidence](docs/evidence/m0.md)
 and [boundary review](docs/evidence/m0-boundary-review.md). These tests establish
 model semantics only, not enforced isolation or durable storage. M1 awaits owner
-approval. Release licensing remains undecided.
+approval. See [M0.1 evidence](docs/evidence/m0-1.md) for the maintainer-requested
+delegation correction and approved licensing decision.

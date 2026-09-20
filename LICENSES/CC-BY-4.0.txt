@@ -1,0 +1,10 @@
+Creative Commons Attribution 4.0 International
+SPDX identifier: CC-BY-4.0
+
+Canonical licence reference (not a paraphrase or replacement of legal terms):
+https://creativecommons.org/licenses/by/4.0/legalcode
+
+Canonical plain-text legal code:
+https://creativecommons.org/licenses/by/4.0/legalcode.txt
+
+JANUS's application of this licence and its exclusions are in LICENSING.md.

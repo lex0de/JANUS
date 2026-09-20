@@ -1,5 +1,7 @@
+/* SPDX-License-Identifier: ISC */
 /* JANUS - Danyal A. Samak <dabsamak@tuta.com>
  * tests/contract/test_model.c; specification oracle, see LICENSING.md. */
+#include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,7 +24,7 @@ struct step {
 	enum janus_command command;
 	enum janus_actor actor;
 	size_t world, target, slot, object, amount;
-	unsigned int rights;
+	unsigned int rights, delegable;
 	enum janus_outcome outcome;
 	uint64_t base;
 	unsigned int fail;
@@ -67,6 +69,7 @@ steps(struct janus_model *m, const struct step *table, size_t n)
 		    .object = s->object,
 		    .amount = s->amount,
 		    .rights = s->rights,
+		    .delegable = s->delegable,
 		    .outcome = s->outcome,
 		    .base = s->base,
 		    .fail = s->fail,
@@ -82,7 +85,7 @@ steps(struct janus_model *m, const struct step *table, size_t n)
 	 .actor = JANUS_##a,                                                   \
 	 .world = w,                                                           \
 	 .expected = JANUS_##e}
-#define G(c, a, w, t, s, o, r, e)                                              \
+#define G(c, a, w, t, s, o, r, d, e)                                           \
 	{.command = JANUS_##c,                                                 \
 	 .actor = JANUS_##a,                                                   \
 	 .world = w,                                                           \
@@ -90,6 +93,7 @@ steps(struct janus_model *m, const struct step *table, size_t n)
 	 .slot = s,                                                            \
 	 .object = o,                                                          \
 	 .rights = r,                                                          \
+	 .delegable = d,                                                       \
 	 .expected = JANUS_##e}
 #define B(w, s, o, r, baseval, e)                                              \
 	{.command = JANUS_BEGIN,                                               \
@@ -132,22 +136,22 @@ test_authority(void)
 	struct janus_model m;
 	static const struct step table[] = {
 	    B(0, 0, 0, JANUS_READ, 0, DENIED),
-	    G(ISSUE, WORLD0, 0, 0, 0, 0, 3, DENIED),
-	    G(ISSUE, OWNER, 0, 0, 0, 0, 0, INVALID),
-	    G(ISSUE, OWNER, 0, 0, 0, 0, 4, INVALID),
-	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK),
-	    G(DELEGATE, WORLD0, 0, 1, 0, 1, 1, DENIED),
-	    G(DELEGATE, WORLD1, 1, 0, 0, 0, 1, DENIED),
-	    G(DELEGATE, WORLD0, 0, 1, 0, 0, 1, OK),
-	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 3, DENIED),
-	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 1, OK),
+	    G(ISSUE, WORLD0, 0, 0, 0, 0, 3, 0, DENIED),
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 0, 0, INVALID),
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 4, 0, INVALID),
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 1, OK),
+	    G(DELEGATE, WORLD0, 0, 1, 0, 1, 1, 0, DENIED),
+	    G(DELEGATE, WORLD1, 1, 0, 0, 0, 1, 0, DENIED),
+	    G(DELEGATE, WORLD0, 0, 1, 0, 0, 1, 1, OK),
+	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 3, 0, DENIED),
+	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 1, 0, OK),
 	    B(0, 0, 1, JANUS_READ, 0, DENIED),
 	    B(1, 1, 0, JANUS_WRITE, 1, DENIED),
 	    B(1, 1, 0, JANUS_READ, 0, OK),
 	    S(REVOKE_BEGIN, OWNER, 0, OK),
 	    B(0, 2, 0, JANUS_READ, 0, DENIED),
 	    B(1, 1, 0, JANUS_READ, 0, DENIED),
-	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 1, DENIED),
+	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 1, 0, DENIED),
 	    S(REVOKE_COMPLETE, OWNER, 0, BUSY),
 	    F(0, 0, DONE, 0, DENIED),
 	    F(1, 0, DONE, 0, OK),
@@ -163,23 +167,123 @@ test_authority(void)
 }
 
 static void
+test_delegation_policy(void)
+{
+	static const struct {
+		unsigned int parent, child;
+		enum janus_result expected;
+	} policy[] = {{0, 0, JANUS_DENIED},
+	              {0, 1, JANUS_DENIED},
+	              {1, 0, JANUS_OK},
+	              {1, 1, JANUS_OK}};
+	size_t i;
+	for (i = 0; i < sizeof(policy) / sizeof(policy[0]); i++) {
+		struct janus_model m;
+		struct janus_request r = {.command = JANUS_ISSUE,
+		                          .actor = JANUS_OWNER,
+		                          .incarnation = 1,
+		                          .sequence = 100,
+		                          .rights = JANUS_READ,
+		                          .delegable = policy[i].parent};
+		running(&m);
+		expect(&m, &r, JANUS_OK);
+		CHECK(m.grants[0].delegable == policy[i].parent);
+		r.command = JANUS_DELEGATE;
+		r.actor = JANUS_WORLD0;
+		r.target = 1;
+		r.delegable = policy[i].child;
+		expect(&m, &r, policy[i].expected);
+		if (policy[i].expected != JANUS_OK)
+			continue;
+		CHECK(m.grants[1].delegable == policy[i].child);
+		CHECK(m.grants[1].rights == JANUS_READ &&
+		      m.grants[1].parent == 0);
+		r.world = 1;
+		r.actor = JANUS_WORLD1;
+		r.target = 0;
+		r.slot = 1;
+		r.delegable = 1;
+		expect(&m, &r, policy[i].child ? JANUS_OK : JANUS_DENIED);
+		/* Even a non-delegable child cannot exist below such a parent.
+		 */
+		m.grants[0].delegable = 0;
+		r.command = JANUS_RECOVER;
+		r.actor = JANUS_OWNER;
+		r.sequence = 101;
+		expect(&m, &r, JANUS_INVALID);
+	}
+	{
+		struct janus_model m;
+		struct janus_request r = {.command = JANUS_ISSUE,
+		                          .actor = JANUS_OWNER,
+		                          .incarnation = 1,
+		                          .sequence = 100,
+		                          .rights = JANUS_READ};
+		running(&m);
+		expect(&m, &r, JANUS_OK);
+		CHECK(m.grants[0].delegable == 0);
+		r.command = JANUS_BEGIN;
+		r.actor = JANUS_WORLD0;
+		r.amount = 1;
+		r.delegable = 1;
+		expect(&m, &r, JANUS_OK);
+		CHECK(m.grants[0].delegable == 0);
+		r.command = JANUS_DELEGATE;
+		r.target = 1;
+		r.sequence++;
+		expect(&m, &r, JANUS_DENIED);
+	}
+	puts("PASS delegation policy: J-003; explicit authority, default deny, "
+	     "attenuation");
+}
+
+static void
+test_delegation_lifetime(void)
+{
+	struct janus_model m;
+	static const struct step revocation[] = {
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 1, 1, OK),
+	    G(DELEGATE, WORLD0, 0, 1, 0, 0, 3, 0, DENIED),
+	    G(DELEGATE, WORLD0, 0, 1, 0, 0, 1, 1, OK),
+	    S(REVOKE_BEGIN, OWNER, 0, OK),
+	    G(DELEGATE, WORLD0, 0, 1, 0, 0, 1, 0, DENIED),
+	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 1, 1, DENIED),
+	    S(REVOKE_COMPLETE, OWNER, 0, OK),
+	    G(DELEGATE, WORLD0, 0, 1, 0, 0, 1, 1, DENIED),
+	    G(DELEGATE, WORLD1, 1, 0, 1, 0, 1, 0, DENIED)};
+	static const struct step restore[] = {
+	    G(ISSUE, OWNER, 1, 0, 0, 0, 1, 1, OK),
+	    G(DELEGATE, WORLD1, 1, 0, 0, 0, 1, 1, OK),
+	    S(STOP, BACKEND, 1, OK),
+	    S(RESTORE, OWNER, 1, OK),
+	    G(DELEGATE, WORLD1, 1, 0, 0, 0, 1, 0, DENIED),
+	    G(DELEGATE, WORLD0, 0, 1, 1, 0, 1, 1, DENIED)};
+	running(&m);
+	RUN(&m, revocation);
+	running(&m);
+	RUN(&m, restore);
+	puts("PASS delegation lifetime: J-003 J-004 J-005 J-006");
+}
+
+static void
 test_commit(void)
 {
 	struct janus_model m;
-	static const struct step table[] = {G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK),
-	                                    B(0, 0, 0, JANUS_WRITE, 1, OK),
-	                                    B(0, 0, 0, JANUS_WRITE, 1, OK),
-	                                    F(0, 0, DONE, 1, IO),
-	                                    S(REVOKE_BEGIN, OWNER, 0, OK),
-	                                    F(0, 0, DONE, 0, OK),
-	                                    F(0, 1, DONE, 0, CONFLICT),
-	                                    S(REVOKE_COMPLETE, OWNER, 0, BUSY),
-	                                    F(0, 1, CANCEL, 0, OK),
-	                                    S(REVOKE_COMPLETE, OWNER, 0, OK),
-	                                    G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK),
-	                                    B(0, 1, 0, JANUS_WRITE, 2, OK),
-	                                    F(0, 2, UNKNOWN, 0, OK),
-	                                    F(0, 2, DONE, 0, STATE)};
+	static const struct step table[] = {
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 0, OK),
+	    B(0, 0, 0, JANUS_WRITE, 1, OK),
+	    B(0, 0, 0, JANUS_WRITE, 1, OK),
+	    F(0, 0, DONE, 1, IO),
+	    S(REVOKE_BEGIN, OWNER, 0, OK),
+	    F(0, 0, DONE, 0, OK),
+	    F(0, 1, DONE, 0, CONFLICT),
+	    S(REVOKE_COMPLETE, OWNER, 0, BUSY),
+	    F(0, 1, CANCEL, 0, OK),
+	    S(REVOKE_COMPLETE, OWNER, 0, OK),
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 0, OK),
+	    B(0, 1, 0, JANUS_WRITE, 2, OK),
+	    F(0, 2, UNKNOWN, 0, OK),
+	    F(0, 2, DONE, 0, STATE)};
 	running(&m);
 	RUN(&m, table);
 	CHECK(m.revision[0] == 2 && m.revision[1] == 1);
@@ -195,28 +299,29 @@ test_restore(void)
 	                              .actor = JANUS_BACKEND,
 	                              .incarnation = 1,
 	                              .sequence = 100};
-	static const struct step table[] = {G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK),
-	                                    B(0, 0, 0, JANUS_WRITE, 1, OK),
-	                                    F(0, 0, UNKNOWN, 0, OK),
-	                                    S(QUIESCE, OWNER, 0, OK),
-	                                    S(SUSPEND, BACKEND, 0, OK),
-	                                    S(RESTORE, OWNER, 0, STATE),
-	                                    S(CHECKPOINT, OWNER, 0, OK),
-	                                    S(REVOKE_BEGIN, OWNER, 0, OK),
-	                                    S(REVOKE_COMPLETE, OWNER, 0, OK),
-	                                    {.command = JANUS_RESTORE,
-	                                     .actor = JANUS_OWNER,
-	                                     .fail = 1,
-	                                     .expected = JANUS_IO},
-	                                    S(RESTORE, OWNER, 0, OK),
-	                                    B(0, 0, 0, JANUS_READ, 0, DENIED),
-	                                    G(ISSUE, OWNER, 0, 0, 0, 0, 1, OK),
-	                                    B(0, 1, 0, JANUS_READ, 0, OK),
-	                                    F(0, 1, DONE, 0, OK),
-	                                    S(QUIESCE, OWNER, 1, OK),
-	                                    S(SUSPEND, BACKEND, 1, OK),
-	                                    S(CHECKPOINT, OWNER, 1, STATE),
-	                                    S(RESTORE, OWNER, 1, OK)};
+	static const struct step table[] = {
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 0, OK),
+	    B(0, 0, 0, JANUS_WRITE, 1, OK),
+	    F(0, 0, UNKNOWN, 0, OK),
+	    S(QUIESCE, OWNER, 0, OK),
+	    S(SUSPEND, BACKEND, 0, OK),
+	    S(RESTORE, OWNER, 0, STATE),
+	    S(CHECKPOINT, OWNER, 0, OK),
+	    S(REVOKE_BEGIN, OWNER, 0, OK),
+	    S(REVOKE_COMPLETE, OWNER, 0, OK),
+	    {.command = JANUS_RESTORE,
+	     .actor = JANUS_OWNER,
+	     .fail = 1,
+	     .expected = JANUS_IO},
+	    S(RESTORE, OWNER, 0, OK),
+	    B(0, 0, 0, JANUS_READ, 0, DENIED),
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 1, 0, OK),
+	    B(0, 1, 0, JANUS_READ, 0, OK),
+	    F(0, 1, DONE, 0, OK),
+	    S(QUIESCE, OWNER, 1, OK),
+	    S(SUSPEND, BACKEND, 1, OK),
+	    S(CHECKPOINT, OWNER, 1, STATE),
+	    S(RESTORE, OWNER, 1, OK)};
 	running(&m);
 	RUN(&m, table);
 	CHECK(m.worlds[0].incarnation == 2 && m.worlds[1].incarnation == 2);
@@ -269,7 +374,7 @@ test_limits(void)
 	size_t i;
 	static const struct step budget[] = {
 	    Q(0, SIZE_MAX, LIMIT), Q(0, 7, LIMIT), Q(1, 0, OK), Q(0, 12, OK),
-	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK)};
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 0, OK)};
 	running(&m);
 	RUN(&m, budget);
 	r.command = JANUS_ISSUE;
@@ -439,7 +544,7 @@ test_malformed(void)
 	r = (struct janus_request){0};
 	CHECK(janus_apply(NULL, &r) == JANUS_INVALID);
 	for (command = 0; command < JANUS_COMMAND_COUNT; command++) {
-		for (field = 0; field < 11; field++) {
+		for (field = 0; field < 13; field++) {
 			fresh(&m);
 			r = (struct janus_request){
 			    .command = (enum janus_command)command,
@@ -480,13 +585,20 @@ test_malformed(void)
 			case 10:
 				m.device = (enum janus_device_state) - 1;
 				break;
+			case 11:
+				r.delegable = 2;
+				break;
+			case 12:
+				r.delegable = UINT_MAX;
+				break;
 			}
 			expect(&m, &r, JANUS_INVALID);
 		}
 	}
-	for (field = 0; field < 20; field++) {
+	for (field = 0; field < 22; field++) {
 		static const struct step grant[] = {
-		    G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK), B(0, 0, 0, 1, 0, OK)};
+		    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 0, OK),
+		    B(0, 0, 0, 1, 0, OK)};
 		running(&m);
 		RUN(&m, grant);
 		r = (struct janus_request){.command = JANUS_RECOVER,
@@ -553,6 +665,12 @@ test_malformed(void)
 		case 19:
 			m.worlds[0].state = JANUS_STOPPED;
 			break;
+		case 20:
+			m.grants[0].delegable = 2;
+			break;
+		case 21:
+			m.grants[0].delegable = UINT_MAX;
+			break;
 		}
 		expect(&m, &r, JANUS_INVALID);
 	}
@@ -592,20 +710,21 @@ static void
 test_regressions(void)
 {
 	struct janus_model m;
-	static const struct step table[] = {Q(0, 0, OK),
-	                                    G(ISSUE, OWNER, 0, 0, 0, 0, 3, OK),
-	                                    B(0, 0, 0, 1, 0, LIMIT),
-	                                    Q(0, 1, OK),
-	                                    B(0, 0, 0, 1, 0, OK),
-	                                    B(0, 0, 0, 1, 0, LIMIT),
-	                                    S(FAULT, BACKEND, 0, OK),
-	                                    S(RECOVER, OWNER, 0, OK),
-	                                    S(RESTORE, OWNER, 0, STATE),
-	                                    F(0, 0, CANCEL, 0, OK),
-	                                    S(STOP, BACKEND, 0, OK)};
+	static const struct step table[] = {
+	    Q(0, 0, OK),
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 3, 0, OK),
+	    B(0, 0, 0, 1, 0, LIMIT),
+	    Q(0, 1, OK),
+	    B(0, 0, 0, 1, 0, OK),
+	    B(0, 0, 0, 1, 0, LIMIT),
+	    S(FAULT, BACKEND, 0, OK),
+	    S(RECOVER, OWNER, 0, OK),
+	    S(RESTORE, OWNER, 0, STATE),
+	    F(0, 0, CANCEL, 0, OK),
+	    S(STOP, BACKEND, 0, OK)};
 	static const struct step delegate_restore[] = {
-	    G(ISSUE, OWNER, 1, 0, 0, 0, 1, OK),
-	    G(DELEGATE, WORLD1, 1, 0, 0, 0, 1, OK),
+	    G(ISSUE, OWNER, 1, 0, 0, 0, 1, 1, OK),
+	    G(DELEGATE, WORLD1, 1, 0, 0, 0, 1, 0, OK),
 	    S(STOP, BACKEND, 1, OK),
 	    S(RESTORE, OWNER, 1, OK),
 	    B(0, 1, 0, 1, 0, DENIED),
@@ -670,7 +789,8 @@ test_lengths_replay(void)
 	struct janus_request r;
 	static const size_t lengths[] = {0, 4097, SIZE_MAX, 1, 4096};
 	size_t i;
-	static const struct step grant[] = {G(ISSUE, OWNER, 0, 0, 0, 0, 1, OK)};
+	static const struct step grant[] = {
+	    G(ISSUE, OWNER, 0, 0, 0, 0, 1, 0, OK)};
 	running(&m);
 	RUN(&m, grant);
 	for (i = 0; i < sizeof(lengths) / sizeof(lengths[0]); i++) {
@@ -696,6 +816,8 @@ main(void)
 	test_world_matrix();
 	test_device_matrix();
 	test_authority();
+	test_delegation_policy();
+	test_delegation_lifetime();
 	test_commit();
 	test_restore();
 	test_foreground_device();

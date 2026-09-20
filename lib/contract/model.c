@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: ISC */
 /* JANUS - Danyal A. Samak <dabsamak@tuta.com>
  * lib/contract/model.c; EXPERIMENTAL model, see LICENSING.md. */
 #include <string.h>
@@ -57,12 +58,13 @@ valid(const struct janus_model *m)
 		if (g->world >= JANUS_WORLDS || g->object >= JANUS_OBJECTS ||
 		    !g->incarnation ||
 		    g->incarnation > m->worlds[g->world].incarnation ||
-		    !g->rights || (g->rights & ~3u) ||
+		    !g->rights || (g->rights & ~3u) || g->delegable > 1 ||
 		    (unsigned int)g->state > JANUS_REVOKED ||
 		    (g->parent != JANUS_NONE && g->parent >= i))
 			return 0;
 		if (g->parent != JANUS_NONE &&
-		    (g->object != m->grants[g->parent].object ||
+		    (!m->grants[g->parent].delegable ||
+		     g->object != m->grants[g->parent].object ||
 		     (g->rights & ~m->grants[g->parent].rights)))
 			return 0;
 	}
@@ -184,8 +186,9 @@ authority(struct janus_model *m, const struct janus_request *r)
 			if (r->slot >= m->ngrants)
 				return JANUS_DENIED;
 			g = &m->grants[r->slot];
-			if (g->world != r->world || !live(m, r->slot) ||
-			    g->object != r->object || (r->rights & ~g->rights))
+			if (g->world != r->world || !g->delegable ||
+			    !live(m, r->slot) || g->object != r->object ||
+			    (r->rights & ~g->rights))
 				return JANUS_DENIED;
 			recipient = r->target;
 			parent = r->slot;
@@ -201,6 +204,7 @@ authority(struct janus_model *m, const struct janus_request *r)
 		g->parent = parent;
 		g->incarnation = m->worlds[recipient].incarnation;
 		g->rights = r->rights;
+		g->delegable = r->delegable;
 		g->state = JANUS_ACTIVE;
 		return JANUS_OK;
 	}
@@ -442,8 +446,9 @@ janus_apply(struct janus_model *m, const struct janus_request *r)
 	    (unsigned int)r->command >= JANUS_COMMAND_COUNT ||
 	    (unsigned int)r->actor > JANUS_WORLD1 ||
 	    (unsigned int)r->outcome > JANUS_UNKNOWN || r->fail > 1 ||
-	    r->world >= JANUS_WORLDS || r->target >= JANUS_WORLDS ||
-	    r->object >= JANUS_OBJECTS || r->slot >= JANUS_SLOTS)
+	    r->delegable > 1 || r->world >= JANUS_WORLDS ||
+	    r->target >= JANUS_WORLDS || r->object >= JANUS_OBJECTS ||
+	    r->slot >= JANUS_SLOTS)
 		return JANUS_INVALID;
 	if (r->actor != actor_for(r->command, r->world))
 		return JANUS_DENIED;

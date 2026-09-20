@@ -1,3 +1,4 @@
+/* SPDX-License-Identifier: ISC */
 /* JANUS - Danyal A. Samak <dabsamak@tuta.com>
  * include/janus/model.h; EXPERIMENTAL model, see LICENSING.md. */
 #ifndef JANUS_MODEL_H
@@ -92,6 +93,7 @@ struct janus_grant {
 	size_t world, object, parent;
 	uint64_t incarnation;
 	unsigned int rights;
+	unsigned int delegable; /* 0 denies delegation; 1 permits it. */
 	enum janus_grant_state state;
 };
 struct janus_operation {
@@ -114,6 +116,8 @@ struct janus_request {
 	size_t world, target, object, slot, amount;
 	uint64_t incarnation, sequence, base;
 	unsigned int rights, fail;
+	/* Requested ISSUE/DELEGATE policy; default 0. */
+	unsigned int delegable;
 	enum janus_outcome outcome;
 };
 

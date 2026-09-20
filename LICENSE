@@ -1,0 +1,17 @@
+JANUS mixed-licence overview
+
+This file is an overview, NOT the verbatim ISC licence and NOT a blanket
+licence for every repository file. See LICENSING.md for scope and provenance.
+
+Independently authored JANUS software: ISC (LICENSES/ISC.txt).
+JANUS documentation and whitepaper: CC BY 4.0 (LICENSES/CC-BY-4.0.txt).
+Imported or derived material: all applicable original terms retained.
+JANUS name and logo, including docs/JANUS_logo.png: rights retained by
+Danyal A. Samak; excluded from the software/documentation grants.
+No trademark licence is granted; see TRADEMARKS.md.
+
+Copyright holder for independently authored JANUS material:
+Copyright (c) 2026 Danyal A. Samak <dabsamak@tuta.com>
+https://www.cryogenix.org
+
+The overview itself is JANUS documentation, SPDX-License-Identifier: CC-BY-4.0.

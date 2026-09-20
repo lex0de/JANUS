@@ -197,12 +197,33 @@ removal, repository deletion, force-push, public release, or ongoing automatic
 publishing outside the explicit task. Never put tokens or credential-bearing URLs
 into commits, reports, prompts, or shell traces.
 
-Read `LICENSING.md`. JANUS has no selected release licence. The old project's ISC
-preference is a proposal, not a licence grant for JANUS. Keep private experimental
-work moving; ask before public licensing or redistribution. Preserve upstream
-notices and document origin, exact revision, paths, local changes, and licence for
-imports. AI rewriting does not remove provenance or licence obligations.
-Do not invent a logo: the original artwork has not been supplied to this bundle.
+Read `LICENSING.md` and approved ADR 0002 (20 September 2026). Independently
+authored JANUS software defaults to ISC; JANUS documentation and the whitepaper
+are CC BY 4.0. Imported/derived material retains all applicable upstream terms.
+Rights in the JANUS name/logo are retained by Danyal A. Samak. No trademark
+licence or registration is implied. `docs/JANUS_logo.png` is excluded from the
+software/documentation grants. Keep the repository PRIVATE; licence selection
+does not authorise a release, public announcement or third-party distribution.
+
+New independently authored JANUS software should normally be
+licensed under the ISC licence.
+
+Imported or derived code retains all applicable upstream copyright
+and licence terms. No contributor or automated tool may relicense
+third-party material merely by rewriting, translating, or
+reformatting it.
+
+Exceptions to the project's default licence require an explicit
+licensing decision before the affected code is committed.
+
+AI-generated rewriting does not erase source provenance or licence obligations.
+Before importing source, record at least: upstream project, source URL, exact
+revision/version, imported file paths, applicable licence, required notices and
+attribution, local modifications, and redistribution restrictions where applicable.
+Do not copy incompatible donor code and attempt to convert it to ISC through
+mechanical or AI-assisted rewriting. Preserve upstream notices. See LICENSING.md
+for the unresolved provenance of inherited instruction wording. Do not invent
+replacement branding; supplied artwork is retained under TRADEMARKS.md.
 
 ## Validation and handoff
 

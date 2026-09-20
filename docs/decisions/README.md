@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Decision register
 
 An ADR is a record, not permission. Accepted records cite the maintainer's actual
@@ -15,7 +16,8 @@ approval and scope. Drafts and experimental defaults must remain labelled.
 | Persistence and authority wire/disk formats | OPEN | M0 test formats do not settle them |
 | Physical target and device assignment | OPEN | Inventory and explicit test authority needed |
 | Recovery and cryptographic/key policy | OPEN | Threat model and maintainer review |
-| Licence and public release | OPEN | See LICENSING.md |
+| Software/documentation licensing and branding | MAINTAINER APPROVED — 20 September 2026 | [ADR 0002](0002-licensing.md): ISC / CC BY 4.0 / branding excluded |
+| Public visibility, release and announcement | NOT AUTHORISED | Repository remains PRIVATE |
 
 Create numbered ADRs only when work reaches the decision. Use
 `docs/templates/ADR.md`. Record alternatives, evidence, consequences, rollback,
@@ -24,3 +26,6 @@ simulate progress or silently edit the whitepaper to hide a design change.
 
 [ADR 0001](0001-m0-model.md): bounded M0 representation and serial transition
 semantics — EXPERIMENTAL / PROPOSED, not maintainer accepted.
+
+M0.1 corrects implicit delegation authority following maintainer review; ADR 0001
+remains EXPERIMENTAL. M0 awaits second review, not acceptance.

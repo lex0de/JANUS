@@ -1,3 +1,4 @@
+<!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # Requirement-to-evidence map
 
 Source: JANUS whitepaper v0.1, sections cited below. IDs are bootstrap traceability
@@ -8,7 +9,7 @@ M0 uses a bounded reference model; real enforcement is later work.
 | --- | --- | --- | --- | --- |
 | J-001 | Worlds and activities have different roles; a world need not be a VM | 3-4 | Native/VM classes share lifecycle without merging their execution claims | PASS (model/review only): test_world_matrix; [M0 evidence](evidence/m0.md) |
 | J-002 | Object names/content hashes and manifest requests do not grant access | 5-6 | A known object ID with no grant is denied | PASS (model/review only): test_authority; [M0 evidence](evidence/m0.md) |
-| J-003 | Delegation cannot amplify rights or scope | 5.2 | Broader child rights/scope rejected; allowed attenuation succeeds | PASS (model/review only): test_authority; [M0 evidence](evidence/m0.md) |
+| J-003 | Delegation requires explicit authority and cannot amplify rights, scope or delegability | 5.2 | Default non-delegable; explicit delegation and policy attenuation; broader rights/scope rejected | PASS M0.1 (model only): test_delegation_policy, test_delegation_lifetime, test_authority, test_malformed; [evidence](evidence/m0-1.md) |
 | J-004 | Current authority outranks saved state | 7.3, App. A | Revoke after checkpoint, restore, reject stale reference | PASS (model/review only): test_restore; [M0 evidence](evidence/m0.md) |
 | J-005 | Completed revocation denies new operations; in-flight effects are specified | 5.2 | Operations before/during/after completion; no false claim of erasing copied data | PASS (model/review only): test_authority, test_commit; [M0 evidence](evidence/m0.md) |
 | J-006 | Restore creates a new incarnation with revalidated session state | 3.1, 7.3 | Old incarnation events and handles cannot affect the new one | PASS (model/review only): test_restore, test_lengths_replay; [M0 evidence](evidence/m0.md) |
