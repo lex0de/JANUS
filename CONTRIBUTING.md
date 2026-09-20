@@ -42,3 +42,6 @@ checks delivery integrity, not current source validity. That historical manifest
 becomes stale as development proceeds; do not regenerate it to conceal changes.
 The optional agent setup is documented in docs/development/CODEX.md. It is a
 development aid, not a JANUS runtime requirement.
+
+For the current native-world experiment, use the [M2 runbook](docs/development/NATIVE_M2.md).
+It separates ordinary tests from explicitly created private live fixtures.

@@ -1,7 +1,7 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # JANUS: current engineering context
 
-## Observed state — 20 September 2026
+## Observed state — 21 September 2026
 
 M0 ACCEPTED by Danyal A. Samak at
 7d4a800ab79c6e5934a81cabe8d21cb5a08097fa. Documentation-only acceptance commit
@@ -39,7 +39,7 @@ M1 merge/acceptance and human-facing README cleanup on main are authorised.
 M2 native experience is authorised on m2-native-experience with an unmerged PR;
 M3–M5 are not. ADR 0003 is accepted for M1 only, not stable product decisions.
 No secure kiosk, native capability isolation, durable replay/anti-rollback,
-durable object storage, physical/DMA isolation, trusted physical recovery,
+power-loss-tested object storage, physical/DMA isolation, trusted physical recovery,
 native kernel or stable public API. M0 remains serial caller-owned memory and
 revocation can stay BUSY. Backend is local monolithic libvirtd only; same-user
 administration is trusted. Viewer PID is not a graphics-readiness guarantee.
@@ -64,10 +64,31 @@ kernel, no downloaded image. Session domain UUID inventory matches the pre-test
 inventory. No existing VM was operated on. Raw logs/generated images stay in
 ignored artifacts/; generated builds in out/. Nested L2 boot NOT RUN.
 
+## M2 checkpoint
+
+Branch m2-native-experience is ready for maintainer review, not accepted or merged.
+New C17 object service/owner tools, inherited socketpair sessions, static note app,
+Landlock ABI 6 plus seccomp, SQLite current grants/revisions and reconstruction.
+Knowing an object ID gives no authority; current grants are checked per admission.
+Owner credential plus peer UID protects M2 controls; sandbox cannot connect to M1.
+Quiescent revocation only; live delegation explicitly unsupported/default-deny.
+See docs/contracts/native-m2.md and ADR 0004, all representations EXPERIMENTAL.
+
+GCC/Clang plain and ASan/UBSan: M0 7176, M1 223, M2 4320 assertions per mode;
+M2 live A–L PASS in all four runs, including actual Landlock bypass denial and
+four real storage-process crash stages (71 additional assertions per live run).
+Static note is not ASan-instrumented; trusted service/tools/store are. No claims
+of sudden-power-loss safety, secure deletion, anti-rollback or whole-system
+confinement. Boundary review retains single-agent shared-assumption risk.
+
+Only new M2 host package: libsqlite3-dev 3.46.1-7+deb13u2, 3480 kB installed,
+no upgrades; removal-only rollback simulated. No removed viewer package restored.
+No M2 VM/display/network/device/configuration changes; nested KVM NOT RUN.
+Live owned children are stopped; private DBs/keys/logs remain ignored in artifacts/.
+M1 merge 0817912; acceptance 153734a; human README 1906f99 and whitespace fix
+5cd4620 were pushed on main before M2. See docs/evidence/m2.md and dependency record.
+
 ## Next permitted action
 
-Finish and push M1 acceptance plus human-facing documentation on main, then create
-m2-native-experience. Probe Landlock and dependencies; implement and validate
-the Linux-hosted object/authority/activity boundary. Do not reinstall the removed
-viewer stack. Stop at M2 READY FOR REVIEW or precise PARTIAL/BLOCKED evidence.
-Do not merge M2 or begin M3.
+Maintainer review of the M2 pull request. Do not merge M2 or begin M3–M5.
+Do not reinstall the removed viewer stack. Stop at M2 READY FOR REVIEW.

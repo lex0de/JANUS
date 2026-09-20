@@ -70,3 +70,25 @@ See [M1 acceptance](evidence/m1-acceptance.md); historical review evidence above
 keeps its original wording. No hosted result becomes native-substrate evidence.
 M2 now targets live J-002/J-004/J-006/J-009/J-011/J-014/J-015; those additional
 claims require new evidence.
+
+## M2 hosted enforcement — 21 September 2026
+
+See [M2 evidence](evidence/m2.md), [boundary review](evidence/m2-boundary-review.md)
+and [native contract](contracts/native-m2.md). These are additional live results,
+not a reinterpretation of historical M0 model tests or M1 viewer evidence.
+
+| ID | M2 evidence | Scope |
+| --- | --- | --- |
+| J-002 | A/B PASS: known ungranted object denied; direct store open EACCES | Service authority plus Linux sandbox, not a native kernel |
+| J-003 | Unit explicit unsupported delegation and non-delegable grants | Live owner grants only; M0 delegation semantics retained |
+| J-004 | H PASS: revoke, restore old activity metadata, restart, access denied | Activity-only reconstruction; no whole-store anti-rollback |
+| J-005 | Unit revoke and max-generation revoke deny future work | Serial quiescent requests; no asynchronous drain claim |
+| J-006 | F/G PASS: old handle rejected in new incarnation, fresh handle succeeds | Connection-local authority with current durable incarnation |
+| J-009 | L and unit limits PASS: world/grant/handle/object/revision/activity/counter/queue bounds | Reserved owner slot; no hard real-time or host-wide DoS guarantee |
+| J-011 | G/H PASS: restart app from activity with current authority | Reconstruction, not exact process checkpoint |
+| J-012 | J PASS: lost acknowledgement reconciles complete new revision | No automatic retry or exactly-once operation ID |
+| J-014 | C/D/E/I/J PASS: immutable revisions, stale-base conflict, READ-only denial, four crash checkpoints | Real SQLite transactions; no power-loss test |
+| J-015 | K and boundary review PASS: service/owner boundary protected and TCB stated | Linux/SQLite/libc/trusted launcher remain trusted |
+| J-016 | Malformed owner/world requests rejected; owner secret checked first | Explicit experimental packets, no arbitrary SQL/commands |
+
+M2 results await maintainer review. M3–M5, nested KVM and physical tests are NOT RUN.
