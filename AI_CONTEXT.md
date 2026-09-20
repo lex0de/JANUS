@@ -11,9 +11,10 @@ delegation authority, deny-new-then-drain revocation and stale-incarnation rules
 Its representation is not a stable ABI or enforcement. Historical evidence stays
 historical; see docs/evidence/m0-acceptance.md.
 
-M1 hosted implementation on m1-hosted-appliance is READY FOR REVIEW, not accepted.
-PR https://github.com/lex0de/JANUS/pull/1 is OPEN against main, unmerged;
-implementation 527cf1b and evidence/rollback 75fc276 were pushed.
+M1 ACCEPTED by the maintainer — 20 September 2026, reviewed at
+8e910332faafae7b412931d31d3510ef53fe4461. PR #1 merged with normal merge
+0817912a81c409d3f53203bff99fa7cfcabbce2a after exact head/commit/path checks.
+See docs/evidence/m1-acceptance.md. Acceptance retains experimental limitations.
 C17 janusd/janusctl use owner-local authenticated bounded commands, trusted
 URI/UUID profiles, libvirt C API, owned virt-viewer children and experimental
 execution records. Viewer loss/leave/recovery preserve guest execution. Restart
@@ -34,8 +35,9 @@ docs/whitepaper CC BY 4.0; upstream terms preserved; name/logo rights retained,
 no trademark licence. Inherited instruction-provenance ambiguity remains recorded.
 Canonical whitepaper and supplied assets are unchanged.
 
-M1 branch commits/private push/unmerged PR are authorised; merge and M2–M5 are not.
-ADR 0003 records experimental hosted choices, not stable product decisions.
+M1 merge/acceptance and human-facing README cleanup on main are authorised.
+M2 native experience is authorised on m2-native-experience with an unmerged PR;
+M3–M5 are not. ADR 0003 is accepted for M1 only, not stable product decisions.
 No secure kiosk, native capability isolation, durable replay/anti-rollback,
 durable object storage, physical/DMA isolation, trusted physical recovery,
 native kernel or stable public API. M0 remains serial caller-owned memory and
@@ -64,6 +66,8 @@ ignored artifacts/; generated builds in out/. Nested L2 boot NOT RUN.
 
 ## Next permitted action
 
-Review the unmerged M1 PR and decide the next scope. Do not merge or begin M2.
-Commit/PR identities belong in the final handoff and Git history; verify current
-Git state before resuming. M1 test success is not maintainer acceptance.
+Finish and push M1 acceptance plus human-facing documentation on main, then create
+m2-native-experience. Probe Landlock and dependencies; implement and validate
+the Linux-hosted object/authority/activity boundary. Do not reinstall the removed
+viewer stack. Stop at M2 READY FOR REVIEW or precise PARTIAL/BLOCKED evidence.
+Do not merge M2 or begin M3.

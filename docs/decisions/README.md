@@ -35,3 +35,9 @@ M1 hosted appliance work is explicitly authorised; M2–M5 are not.
 viewer lifecycle and experimental execution records. Implementation choices are
 EXPERIMENTAL within explicit M1 authority; M1 awaits review, no stable format or
 native-substrate approval. Evidence: [M1](../evidence/m1.md).
+
+M1 ACCEPTED — 20 September 2026, at reviewed head 8e910332; PR #1 merged by
+normal merge 0817912. [Acceptance](../evidence/m1-acceptance.md) defines the
+bounded scope of accepted ADR 0003. M2 native experience is now explicitly
+authorised on a separate branch; M3–M5 are not. Earlier entries describe their
+original decision-time scope.

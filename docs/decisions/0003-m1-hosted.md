@@ -1,8 +1,11 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # ADR 0003: narrow Linux-hosted M1 boundary
 
-Status: EXPERIMENTAL implementation choices within explicit maintainer M1 scope;
-not approval of stable APIs, wire/profile/host-record formats or native substrate.
+Status: ACCEPTED for the bounded M1 experiment — 20 September 2026.
+Maintainer review of 8e910332faafae7b412931d31d3510ef53fe4461; see
+[acceptance](../evidence/m1-acceptance.md). Concrete mechanisms and formats remain
+EXPERIMENTAL; no stable APIs, wire/profile/host-record formats or native substrate
+are approved.
 
 Use C17, libvirt C API, owner-local Unix SOCK_SEQPACKET, SO_PEERCRED and fixed
 virt-viewer argv. Profiles bind an ID to a local explicit URI and exact UUID.
@@ -40,4 +43,4 @@ Dependencies: libvirt headers/library and virt-viewer as requested; Weston is a
 build/test display dependency, not JANUS runtime architecture. No vendoring.
 See M1 evidence for exact versions/licences/fixture. Rollback: terminate only
 owned viewer/broker/lab resources; retain host and original guests; remove only
-new packages after reviewing reverse dependencies. M2–M5 remain unauthorised.
+new packages after reviewing reverse dependencies. M2 was subsequently authorised separately; M3–M5 remain unauthorised.

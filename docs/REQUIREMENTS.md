@@ -62,3 +62,11 @@ comes from [M1 live tests](evidence/m1.md), not a reinterpretation of M0 passes.
 
 M0 accepted at 7d4a800 on the maintainer's explicit instruction. M1 is READY FOR
 REVIEW, not accepted. Physical/nested evidence is not inferred from these results.
+
+## M1 acceptance
+
+The maintainer accepted the bounded M1 results at 8e910332 on 20 September 2026.
+See [M1 acceptance](evidence/m1-acceptance.md); historical review evidence above
+keeps its original wording. No hosted result becomes native-substrate evidence.
+M2 now targets live J-002/J-004/J-006/J-009/J-011/J-014/J-015; those additional
+claims require new evidence.
