@@ -12,7 +12,7 @@ REVIEW; no maintainer acceptance, M1 implementation or hardware assignment.
 | Portable bounded C model | PASS | C17, no runtime dependencies beyond libc |
 | Independent expected-result tables | PASS | GCC/Clang, sanitizers, malformed state/input, ordered races |
 | Boundary review and evidence | PASS | Trace entry points; record findings and limitations |
-| Reviewed commits/private remote | IN PROGRESS | main initialised; personal account verified; target 404 |
+| Reviewed commits/private remote | PASS | Private lex0de/JANUS; implementation SHA verified; publication.md |
 
 Paths: docs/contracts/, docs/decisions/, docs/evidence/, include/janus/,
 lib/contract/, tests/contract/, Makefile, README.md, AI_CONTEXT.md and requirement
@@ -29,5 +29,4 @@ no upgrades/removals; installation completed; all required tools now present. No
 identity preserved. No kernel, ABI, storage format or licence selected.
 
 Final local validation: 6920 assertions per GCC/Clang plain and sanitizer run;
-static analyses and make check PASS. See docs/evidence/m0.md. Remote publication
-remains in progress. No host configuration or guest changes.
+static analyses and make check PASS. See docs/evidence/m0.md. Private implementation publication verified. No host configuration or guest changes.

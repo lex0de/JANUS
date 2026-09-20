@@ -34,13 +34,15 @@ ignored artifacts/. No host configuration, network, firmware or guest changes.
 Eight reviewed development packages installed; versions and rollback in evidence.
 Sandbox LeakSanitizer failed under ptrace; host probes/model sanitizer runs pass.
 
-Standalone Git main initialised. Authenticated GitHub personal account lex0de
-verified; lex0de/JANUS returned 404. Reviewed initial commit/publication pending.
+Standalone Git main tracks origin/main at https://github.com/lex0de/JANUS.
+Personal account and PRIVATE visibility verified. Initial implementation commit
+06e1b7210dcaac998e6f6aab8e17f9b6101f6a89 pushed and remote SHA matched.
+See docs/evidence/publication.md; subsequent checkpoint is documentation only.
 Supplied PDF/DOCX/PNG assets exist and are preserved; no new artwork generated.
 
 ## Next permitted action
 
-Finish reviewed private publication, then stop for maintainer M0 review.
+Stop for maintainer M0 review. Bootstrap publication is complete.
 The proposal in docs/plans/m1-candidate.md is not authority to implement M1.
 Read docs/architecture/JANUS_Whitepaper_v0.1.md for architecture, docs/REQUIREMENTS.md
 for evidence IDs, and docs/decisions/README.md for decisions. No native substrate,

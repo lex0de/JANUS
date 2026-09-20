@@ -8,7 +8,7 @@ approval and scope. Drafts and experimental defaults must remain labelled.
 | JANUS is the entire OS | USER DIRECTED | Current project request and whitepaper |
 | C/C++, OpenBSD-inspired engineering | USER DIRECTED | Current bootstrap request |
 | Debian 13 development host; scoped sudo/doas | USER DIRECTED | Current bootstrap request; inventory recorded in docs/evidence/m0.md |
-| New GitHub repository | USER DIRECTED | Current request; personal account lex0de verified; target returned 404 before creation |
+| New GitHub repository | USER DIRECTED | Current request; private lex0de/JANUS created and implementation commit verified |
 | Private visibility, main branch, M0-only start | USER APPROVED FOR B0/M0 | Explicit approval in 20 September 2026 task |
 | C17/C++17 hosted tests, small Make build | EXPERIMENTAL DEFAULT | Not a native kernel/toolchain decision |
 | Native kernel/framework | OPEN | Compare existing substrates at M3 |
