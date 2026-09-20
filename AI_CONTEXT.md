@@ -67,6 +67,8 @@ ignored artifacts/; generated builds in out/. Nested L2 boot NOT RUN.
 ## M2 checkpoint
 
 Branch m2-native-experience is ready for maintainer review, not accepted or merged.
+PR #2: https://github.com/lex0de/JANUS/pull/2 (OPEN, base main, PRIVATE repo).
+Implementation 4df4a64; validation/evidence b007d50 pushed and remote-verified.
 New C17 object service/owner tools, inherited socketpair sessions, static note app,
 Landlock ABI 6 plus seccomp, SQLite current grants/revisions and reconstruction.
 Knowing an object ID gives no authority; current grants are checked per admission.
