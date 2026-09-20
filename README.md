@@ -136,5 +136,6 @@ licensing does not authorise a release or public announcement.
 
 ## Author
 
-**Danyal A. Samak** — <dabsamak@tuta.com>  
+**Danyal A. Samak** — <dabsamak@tuta.com>
+
 [cryogenix.org](https://www.cryogenix.org)
