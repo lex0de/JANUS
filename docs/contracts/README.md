@@ -1,8 +1,10 @@
 # EXPERIMENTAL M0 contracts
 
-These candidate rules interpret whitepaper sections 3–9 and Appendix A. They are
+These M0 experimental baseline rules were accepted by the maintainer on
+20 September 2026 at 7d4a800; see ../evidence/m0-acceptance.md. They interpret
+whitepaper sections 3–9 and Appendix A. They are
 not an ABI, wire format, disk format or enforced security boundary. ADR 0001
-records proposed details where the whitepaper leaves choices open.
+records the accepted M0 reference-model details; layouts remain experimental.
 
 The test driver owns all model memory and supplies actor identity. OWNER models
 authenticated grant/recovery control, BACKEND models trusted lifecycle/device

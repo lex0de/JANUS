@@ -12,7 +12,11 @@ M0's capability model is not an enforcement layer for this broker. See
 Install only inspected missing dependencies after apt simulation. The development
 build needs libvirt headers and pkg-config; the viewer needs virt-viewer. Weston
 is solely the isolated Wayland test display. See the dependency evidence for
-versions, licences and rollback. No dependency is vendored.
+versions, licences and rollback. No dependency is vendored. The tested Debian
+viewer package was removed at the maintainer's request because a dependency
+installed a setuid USB helper and active-session policy. Do not reinstall it
+without an approved dependency solution. Live reruns are currently blocked;
+unit/build checks remain available. Historical live evidence is preserved.
 
 ```
 make hosted CC=gcc
