@@ -1,5 +1,5 @@
 # JANUS - Danyal A. Samak <dabsamak@tuta.com>
-# Makefile: bootstrap checks, M0 model and experimental M1 hosted boundary.
+# Makefile: integrity, M0 model, M1 hosted and M2 native experiments.
 PYTHON = python3
 CC = cc
 MODEL_FLAGS = -std=c17 -Wall -Wextra -Wpedantic -Werror -Wconversion \
@@ -20,7 +20,10 @@ help:
 	    'make test-sanitize CC=gcc - model under ASan/UBSan (also clang)' \
 	    'make hosted CC=gcc - Linux hosted broker and client' \
 	    'make test-hosted CC=gcc - deterministic hosted tests' \
-	    'make test-hosted-live FIXTURE=artifacts/new-lab - explicit disposable VM'
+	    'make test-hosted-live FIXTURE=artifacts/new-lab - explicit disposable VM' \
+	    'make native CC=gcc - M2 object service/tools and static note' \
+	    'make test-native CC=gcc - M2 unit/storage process-crash tests' \
+	    'make test-native-live CC=gcc FIXTURE=artifacts/new-m2 - explicit M2 lab'
 
 check:
 	$(PYTHON) tools/check-bootstrap.py
@@ -90,3 +93,37 @@ format-hosted:
 test-hosted-live: hosted
 	@test -n "$(FIXTURE)" || { echo 'Set FIXTURE to a NEW directory under artifacts/'; exit 2; }
 	$(PYTHON) tests/hosted/live.py $(if $(filter 1,$(RETRY)),--retry,--create) "$(FIXTURE)"
+
+NATIVE_FLAGS = $(MODEL_FLAGS) -Iinclude
+NATIVE_COMMON = lib/native/protocol.c lib/native/local.c lib/native/sandbox.c lib/native/cli.c
+NATIVE_STORE = lib/native/store.c
+.PHONY: native
+native:
+	mkdir -p out
+	$(CC) $(NATIVE_FLAGS) $(CFLAGS) $(NATIVE_COMMON) $(NATIVE_STORE) cmd/janus-objectd/main.c $(LDFLAGS) -lsqlite3 -o out/janus-objectd
+	$(CC) $(NATIVE_FLAGS) $(CFLAGS) $(NATIVE_COMMON) cmd/janus-objectctl/main.c $(LDFLAGS) -o out/janus-objectctl
+	$(CC) $(NATIVE_FLAGS) $(CFLAGS) $(NATIVE_COMMON) cmd/janus-run/main.c $(LDFLAGS) -o out/janus-run
+	$(CC) $(NATIVE_FLAGS) -static lib/native/protocol.c lib/native/cli.c cmd/janus-note/main.c -o out/janus-note
+
+.PHONY: test-native test-native-sanitize analyze-native format-native
+test-native:
+	mkdir -p out
+	$(CC) $(NATIVE_FLAGS) $(CFLAGS) $(NATIVE_COMMON) $(NATIVE_STORE) tests/native/test_native.c $(LDFLAGS) -lsqlite3 -o out/test-native-$(CC)
+	./out/test-native-$(CC)
+
+test-native-sanitize:
+	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 $(MAKE) test-native CC=$(CC) CFLAGS='-fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize-recover=all' LDFLAGS='-fsanitize=address,undefined'
+
+analyze-native:
+	mkdir -p out
+	@set -e; for src in $(NATIVE_COMMON) $(NATIVE_STORE) cmd/janus-objectd/main.c cmd/janus-objectctl/main.c cmd/janus-run/main.c cmd/janus-note/main.c tests/native/test_native.c; do \
+	    echo "Analyzing $$src"; $(CC) $(NATIVE_FLAGS) $(ANALYZE) -c "$$src" -o out/analyze-native.o; \
+	done
+
+format-native:
+	clang-format --dry-run --Werror include/janus/native/*.h lib/native/*.c cmd/janus-objectd/*.c cmd/janus-objectctl/*.c cmd/janus-run/*.c cmd/janus-note/*.c tests/native/*.c
+
+.PHONY: test-native-live
+test-native-live: native hosted test-native
+	@test -n "$(FIXTURE)" || { echo 'Set FIXTURE to a NEW directory under artifacts/'; exit 2; }
+	$(PYTHON) tests/native/live.py --fixture "$(FIXTURE)" --cc "$(CC)"
