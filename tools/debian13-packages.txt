@@ -1,0 +1,9 @@
+# Hosted M0 development/review tools. Not a JANUS runtime package list.
+build-essential
+clang
+clang-format
+libclang-rt-dev
+gdb
+pkg-config
+python3
+shellcheck

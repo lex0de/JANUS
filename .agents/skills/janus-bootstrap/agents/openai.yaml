@@ -1,0 +1,6 @@
+interface:
+  display_name: "JANUS bootstrap"
+  short_description: "Bounded setup and M0 contract experiments"
+  default_prompt: "Use $janus-bootstrap for the explicitly approved JANUS bootstrap scope."
+policy:
+  allow_implicit_invocation: false

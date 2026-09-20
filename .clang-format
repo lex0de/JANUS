@@ -1,0 +1,18 @@
+# Approximate OpenBSD-inspired layout for NEW JANUS code.
+# Not an exact style(9) implementation; review diffs and preserve imports.
+BasedOnStyle: LLVM
+UseTab: ForIndentation
+IndentWidth: 8
+TabWidth: 8
+ContinuationIndentWidth: 4
+ColumnLimit: 80
+BreakBeforeBraces: Linux
+AlwaysBreakAfterReturnType: AllDefinitions
+AllowShortFunctionsOnASingleLine: None
+AllowShortIfStatementsOnASingleLine: Never
+AllowShortLoopsOnASingleLine: false
+IndentCaseLabels: false
+SortIncludes: false
+DerivePointerAlignment: false
+PointerAlignment: Right
+SpaceBeforeParens: ControlStatements

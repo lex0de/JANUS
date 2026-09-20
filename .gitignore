@@ -1,0 +1,19 @@
+# Local outputs. Keep actual source/configuration tracked.
+/out/
+/artifacts/
+/lab-local/
+/downloads/
+/.venv/
+/compile_commands.json
+/.codex/.local/
+/.codex/sessions/
+/.codex/history.jsonl
+/.codex/auth.json
+/.env
+/.env.*
+!/.env.example
+__pycache__/
+*.pyc
+*.core
+# VM images and firmware variables belong in ignored lab-local/ or artifacts/.
+# No broad build/, src/, pkg/ or all-of-.codex ignore rule.

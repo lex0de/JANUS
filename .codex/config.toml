@@ -1,0 +1,8 @@
+# JANUS project defaults. No credentials or model pin.
+# Subject to installed CLI support, project trust and managed policy.
+approval_policy = "on-request"
+sandbox_mode = "workspace-write"
+project_doc_max_bytes = 32768
+
+[sandbox_workspace_write]
+network_access = false
