@@ -12,6 +12,8 @@ Its representation is not a stable ABI or enforcement. Historical evidence stays
 historical; see docs/evidence/m0-acceptance.md.
 
 M1 hosted implementation on m1-hosted-appliance is READY FOR REVIEW, not accepted.
+PR https://github.com/lex0de/JANUS/pull/1 is OPEN against main, unmerged;
+implementation 527cf1b and evidence/rollback 75fc276 were pushed.
 C17 janusd/janusctl use owner-local authenticated bounded commands, trusted
 URI/UUID profiles, libvirt C API, owned virt-viewer children and experimental
 execution records. Viewer loss/leave/recovery preserve guest execution. Restart
