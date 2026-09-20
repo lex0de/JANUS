@@ -45,3 +45,20 @@ M1 needs actual domain identity/state reconciliation and viewer recovery. M2 nee
 an enforcing object/grant boundary and interrupted commits. M3 needs a measured
 native substrate configuration. M4 needs named device/reset/IOMMU evidence. M5
 needs updates, independent backup restoration, and responsiveness/power results.
+
+## M1 hosted evidence — 20 September 2026
+
+The M0 rows above retain their model scope. The following additional evidence
+comes from [M1 live tests](evidence/m1.md), not a reinterpretation of M0 passes.
+
+| ID | Additional observed evidence | Boundary |
+| --- | --- | --- |
+| J-007 | PASS live B–J: guest execution, viewer process and foreground are independent; leave/crash/restart preserve execution | No device ownership or secure-kiosk claim |
+| J-009 | PASS unit limits and live L: fixed profiles/messages/client slots, incarnation overflow and fork/FD exhaustion | No host-wide resource isolation or hard real-time guarantee |
+| J-012 | PASS injected start/save errors and live H/J; uncertainty never adopts an active execution without a matching record | Experimental host record, no durable authority/anti-rollback |
+| J-013 | PASS live G/H: SIGSTOP viewer recovered without guest input, guest survives broker crash | Software owner socket only, no physical secure attention |
+| J-015 | PASS boundary review describes Linux/libvirt ambient authority and M0/M1/native distinctions | No native capability enforcement |
+| J-016 | PASS authenticated owner socket, strict parser, unknown/oversized/trailing/replay-like input; K proves no UUID/name fallback | Other-UID expected-peer test is unit-level; no generic command/XML/QMP forwarding |
+
+M0 accepted at 7d4a800 on the maintainer's explicit instruction. M1 is READY FOR
+REVIEW, not accepted. Physical/nested evidence is not inferred from these results.

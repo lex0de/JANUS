@@ -3,48 +3,67 @@
 
 ## Observed state — 20 September 2026
 
-M0 ACCEPTED by the maintainer on 20 September 2026 at
-7d4a800ab79c6e5934a81cabe8d21cb5a08097fa; see docs/evidence/m0-acceptance.md. M0.1 fixes the maintainer's
-blocking finding that grant delegation was implicit. Grants now record an
-explicit checked delegable policy, default zero; children may only retain or
-reduce delegation authority. Representation remains EXPERIMENTAL.
+M0 ACCEPTED by Danyal A. Samak at
+7d4a800ab79c6e5934a81cabe8d21cb5a08097fa. Documentation-only acceptance commit
+`db4e698cadee038a27bfef19851b79d9ece585bb` pushed to PRIVATE main before branching.
+ADR 0001 is accepted only for the experimental reference model: explicit
+delegation authority, deny-new-then-drain revocation and stale-incarnation rules.
+Its representation is not a stable ABI or enforcement. Historical evidence stays
+historical; see docs/evidence/m0-acceptance.md.
 
-GCC and Clang each pass 7176 assertions plain and under ASan/UBSan with leak
-detection. Static analyzers, clang-format and make check pass. Evidence and
-whole affected authority review: docs/evidence/m0-1.md and
-m0-1-boundary-review.md. Canonical whitepaper and supplied copies/logo unchanged.
+M1 hosted implementation on m1-hosted-appliance is READY FOR REVIEW, not accepted.
+PR https://github.com/lex0de/JANUS/pull/1 is OPEN against main, unmerged;
+implementation 527cf1b and evidence/rollback 75fc276 were pushed.
+C17 janusd/janusctl use owner-local authenticated bounded commands, trusted
+URI/UUID profiles, libvirt C API, owned virt-viewer children and experimental
+execution records. Viewer loss/leave/recovery preserve guest execution. Restart
+reconciles exact UUID/epoch and never imports viewer/foreground from a PID file.
+See docs/development/HOSTED_M1.md and docs/evidence/m1.md/m1-boundary-review.md.
 
-The model is trusted caller-owned memory, not enforcing capabilities or OS
-isolation. Two worlds, two objects, eight lifetime grant/operation slots; serial
-calls. An uncooperative world can keep revocation BUSY. No real backend/kernel.
+M0 source/tests unchanged: GCC/Clang each pass 7176 assertions plain and ASan/UBSan.
+M1: 223 unit/process assertions per compiler/mode; both static analyzers, formatting
+and bootstrap checks pass. Live A–L pass with GCC/Clang plain and ASan/UBSan,
+including actual guest boot and VNC connection on isolated headless Wayland.
+Initial ACPI and viewer-runtime test failures are retained in evidence.
 
-## Explicit decisions and scope
+## Explicit decisions and limits
 
-Maintainer Danyal A. Samak <dabsamak@tuta.com>, https://www.cryogenix.org,
-approved licensing on 20 September 2026: independently authored JANUS software
-ISC; documentation/whitepaper CC BY 4.0; upstream terms preserved; name/logo
-rights retained, no trademark licence. ADR 0002 is approved; ADR 0001 is accepted for the M0 model only. LICENSING.md records inherited instruction-provenance ambiguity.
+Maintainer: Danyal A. Samak <dabsamak@tuta.com>, https://www.cryogenix.org.
+Approved licensing (20 September 2026, ADR 0002): independent software ISC;
+docs/whitepaper CC BY 4.0; upstream terms preserved; name/logo rights retained,
+no trademark licence. Inherited instruction-provenance ambiguity remains recorded.
+Canonical whitepaper and supplied assets are unchanged.
 
-The current task authorises M0 acceptance on PRIVATE main, then M1 work on
-m1-hosted-appliance and an unmerged PR. No visibility change, release or public announcement.
-Native substrate, stable ABI/wire/disk formats, hardware/device and key/recovery
-policy remain open. M1 is authorised; M2–M5 are not. No required runtime LLM.
+M1 branch commits/private push/unmerged PR are authorised; merge and M2–M5 are not.
+ADR 0003 records experimental hosted choices, not stable product decisions.
+No secure kiosk, native capability isolation, durable replay/anti-rollback,
+durable object storage, physical/DMA isolation, trusted physical recovery,
+native kernel or stable public API. M0 remains serial caller-owned memory and
+revocation can stay BUSY. Backend is local monolithic libvirtd only; same-user
+administration is trusted. Viewer PID is not a graphics-readiness guarantee.
 
 ## Host/repository checkpoint
 
-Started clean on main at 37a0ae7c8b6ba072e96c9fc51cd09658b48e28dd.
-Origin https://github.com/lex0de/JANUS.git; API verified private=true/main.
-The commit containing this checkpoint is M0.1; final handoff records commit and
-push verification. Existing author identity preserved; no global Git changes.
-Debian 13.7, GCC 14.2.0, Clang 19.1.7. No host/package/VM/configuration changes
-in this task. Earlier B0 setup remains documented in docs/evidence/m0.md.
-Raw logs stay in ignored artifacts/. Actual nested boot/hardware enforcement
-remain NOT RUN; indicators alone do not verify them.
+Origin https://github.com/lex0de/JANUS.git; private=true/main verified via gh.
+Existing author identity preserved; no global Git configuration changes.
+Debian 13.7, Linux 6.12.107+deb13-amd64, GCC 14.2.0, Clang 19.1.7.
+Installed libvirt-dev, virt-viewer and Weston plus 18 dependencies after simulation.
+The audit found an unwanted setuid USB helper/active-session policy. On the
+maintainer's explicit instruction, removed virt-viewer, both new SPICE client
+libraries and the helper; verified executable/helper/policy absent. Seventeen
+new packages remain, no upgrades. Live evidence predates this cleanup; new live
+runs are BLOCKED pending an approved viewer dependency setup. Exact versions/rollback:
+docs/evidence/m1-dependencies.md. Normal libvirt on-demand daemons are recorded.
+No desktop/network/firmware/KVM module or custom policy reconfiguration.
+
+One qemu:///session KVM fixture, UUID c4a20229-6664-49ce-96f1-b8b267d66965,
+was stopped/undefined after tests. Guest boot probe uses the installed Debian
+kernel, no downloaded image. Session domain UUID inventory matches the pre-test
+inventory. No existing VM was operated on. Raw logs/generated images stay in
+ignored artifacts/; generated builds in out/. Nested L2 boot NOT RUN.
 
 ## Next permitted action
 
-Push the documentation-only M0 acceptance commit on main, then branch
-m1-hosted-appliance for the explicitly authorised hosted C17 broker/client.
-Use one disposable UUID-bound guest and isolated presentation, no existing guest
-or host policy changes. Stop at M1 READY FOR REVIEW or precise partial/blockers.
-Do not merge the M1 PR or start M2. Existing M0 limitations remain unchanged.
+Review the unmerged M1 PR and decide the next scope. Do not merge or begin M2.
+Commit/PR identities belong in the final handoff and Git history; verify current
+Git state before resuming. M1 test success is not maintainer acceptance.

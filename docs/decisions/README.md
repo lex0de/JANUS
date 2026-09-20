@@ -30,3 +30,8 @@ semantics — ACCEPTED for M0 on 20 September 2026; representation EXPERIMENTAL.
 M0.1 corrects implicit delegation authority following maintainer review; ADR 0001
 is accepted as the M0 reference-model decision; layouts remain EXPERIMENTAL.
 M1 hosted appliance work is explicitly authorised; M2–M5 are not.
+
+[ADR 0003](0003-m1-hosted.md): bounded Linux-hosted M1 broker, UUID profiles,
+viewer lifecycle and experimental execution records. Implementation choices are
+EXPERIMENTAL within explicit M1 authority; M1 awaits review, no stable format or
+native-substrate approval. Evidence: [M1](../evidence/m1.md).
