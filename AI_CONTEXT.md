@@ -3,7 +3,8 @@
 
 ## Observed state — 20 September 2026
 
-M0 READY FOR SECOND REVIEW, not maintainer accepted. M0.1 fixes the maintainer's
+M0 ACCEPTED by the maintainer on 20 September 2026 at
+7d4a800ab79c6e5934a81cabe8d21cb5a08097fa; see docs/evidence/m0-acceptance.md. M0.1 fixes the maintainer's
 blocking finding that grant delegation was implicit. Grants now record an
 explicit checked delegable policy, default zero; children may only retain or
 reduce delegation authority. Representation remains EXPERIMENTAL.
@@ -22,13 +23,12 @@ calls. An uncooperative world can keep revocation BUSY. No real backend/kernel.
 Maintainer Danyal A. Samak <dabsamak@tuta.com>, https://www.cryogenix.org,
 approved licensing on 20 September 2026: independently authored JANUS software
 ISC; documentation/whitepaper CC BY 4.0; upstream terms preserved; name/logo
-rights retained, no trademark licence. ADR 0002 is approved, unlike experimental
-model ADR 0001. LICENSING.md records inherited instruction-provenance ambiguity.
+rights retained, no trademark licence. ADR 0002 is approved; ADR 0001 is accepted for the M0 model only. LICENSING.md records inherited instruction-provenance ambiguity.
 
-The current task authorises the bounded correction/licensing commit and push to
-existing PRIVATE origin/main. No visibility change, release or public announcement.
+The current task authorises M0 acceptance on PRIVATE main, then M1 work on
+m1-hosted-appliance and an unmerged PR. No visibility change, release or public announcement.
 Native substrate, stable ABI/wire/disk formats, hardware/device and key/recovery
-policy remain open. No M1 authority. No required runtime LLM.
+policy remain open. M1 is authorised; M2–M5 are not. No required runtime LLM.
 
 ## Host/repository checkpoint
 
@@ -43,6 +43,8 @@ remain NOT RUN; indicators alone do not verify them.
 
 ## Next permitted action
 
-Complete the authorised reviewed private commit/push, then stop at
-M0 READY FOR SECOND REVIEW. Maintainer review is required before any M1 work.
-See docs/plans/m0-1.md, docs/REQUIREMENTS.md and docs/decisions/README.md.
+Push the documentation-only M0 acceptance commit on main, then branch
+m1-hosted-appliance for the explicitly authorised hosted C17 broker/client.
+Use one disposable UUID-bound guest and isolated presentation, no existing guest
+or host policy changes. Stop at M1 READY FOR REVIEW or precise partial/blockers.
+Do not merge the M1 PR or start M2. Existing M0 limitations remain unchanged.

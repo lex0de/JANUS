@@ -1,7 +1,14 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # ADR 0001: bounded contract experiment
 
-Status: EXPERIMENTAL / PROPOSED, not maintainer accepted.
+Status: ACCEPTED as the M0 reference-model decision, 20 September 2026.
+Explicit maintainer acceptance of commit
+7d4a800ab79c6e5934a81cabe8d21cb5a08097fa authorises the reviewed experimental
+contract baseline, delegation correction, deny-new-then-drain revocation and
+restore/incarnation semantics. Concrete C representations/layouts remain
+EXPERIMENTAL, not stable ABI/IPC/disk formats or enforcement evidence.
+See ../evidence/m0-acceptance.md. The proposal wording below records the original
+rationale; its model semantics are now accepted in this bounded scope.
 
 The user approved C17 hosted tests, optional restrained C++17, Make, standalone
 main and a private personal GitHub repository for B0/M0. These approvals do not

@@ -25,7 +25,8 @@ approval source and revisit conditions. Do not create a dozen empty ADRs to
 simulate progress or silently edit the whitepaper to hide a design change.
 
 [ADR 0001](0001-m0-model.md): bounded M0 representation and serial transition
-semantics — EXPERIMENTAL / PROPOSED, not maintainer accepted.
+semantics — ACCEPTED for M0 on 20 September 2026; representation EXPERIMENTAL.
 
 M0.1 corrects implicit delegation authority following maintainer review; ADR 0001
-remains EXPERIMENTAL. M0 awaits second review, not acceptance.
+is accepted as the M0 reference-model decision; layouts remain EXPERIMENTAL.
+M1 hosted appliance work is explicitly authorised; M2–M5 are not.
