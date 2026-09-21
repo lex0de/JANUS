@@ -34,3 +34,9 @@ slots. Grant/operation slots are lifetime bounded at eight and never recycled.
 World names/classes/manifests convey no authority. Activity grouping is outside
 this minimal model and never merges grants. Objects have stable indices and
 independent revision counters; numeric indices are test references only.
+
+## Hosted enforcement experiments
+
+[M2 native contract](native-m2.md) separately defines the experimental enforced
+Linux object/session/activity boundary. It does not turn the M0 model above into
+an OS security boundary. See ADR 0004 and the M2 evidence for scope and limits.

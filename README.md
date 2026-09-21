@@ -70,7 +70,7 @@ Milestones follow whitepaper §14.2 and advance through review and evidence.
 | --- | --- | --- |
 | M0 — Contracts | Accepted | Reviewed experimental contracts and executable reference model |
 | M1 — Hosted appliance | Accepted | UUID-bound guest control, presentation lifecycle and software recovery |
-| M2 — Native experience | Current work | Native document tool, enforced object grants and activity reconstruction |
+| M2 — Native experience | Ready for review | Native document tool, enforced object grants and activity reconstruction |
 | M3 — Substrate experiment | Planned; not started | Evaluate a native capability substrate |
 | M4 — Hardware ownership | Planned; not started | Device assignment, withdrawal, reset and quarantine |
 | M5 — Personal alpha | Planned; not started | Daily-use activities, updates, backup and measured behaviour |
@@ -93,6 +93,12 @@ to undo an unwanted package-provided USB-access policy. The recorded results
 remain valid; new viewer tests require an approved dependency setup. M2 does not
 require that viewer stack.
 
+The M2 branch adds a small native note application, SQLite-backed versioned
+objects, current owner-issued grants and activity reconstruction. Its Linux
+Landlock/seccomp sandbox denies direct access to the backing store; private
+inherited endpoints bind session authority. Process-crash tests exercise real
+commit boundaries. These results are [ready for review](docs/evidence/m2.md).
+
 There is no native JANUS kernel, secure kiosk, physical recovery mechanism or
 proven device/DMA isolation. Durable authority, anti-rollback and final public
 interfaces remain open work. See the [decision register](docs/decisions/README.md).
@@ -108,6 +114,9 @@ make test-sanitize CC=gcc     # M0 ASan/UBSan; repeat with CC=clang
 make hosted CC=gcc            # M1 broker/client; needs libvirt development files
 make test-hosted CC=gcc       # M1 unit/process tests; no guest or viewer needed
 make test-hosted-sanitize CC=gcc
+make native CC=gcc            # M2 service/tools; SQLite development files required
+make test-native CC=gcc       # M2 unit and storage-process crash tests
+make test-native-sanitize CC=gcc
 ```
 
 Ordinary tests never create a VM. Consult [contributor setup](CONTRIBUTING.md)
@@ -119,6 +128,7 @@ and the [hosted M1 runbook](docs/development/HOSTED_M1.md) before any live test.
 - [Contracts](docs/contracts/README.md) and [requirements](docs/REQUIREMENTS.md)
 - [Roadmap and milestone plan](BOOTSTRAP_PLAN.md)
 - [Decisions](docs/decisions/README.md)
+- [M2 native runbook](docs/development/NATIVE_M2.md) and [M2 evidence](docs/evidence/m2.md)
 - [M1 evidence](docs/evidence/m1.md) and [boundary review](docs/evidence/m1-boundary-review.md)
 - [Development conventions](docs/development/CODING.md), [host setup](docs/development/HOST.md)
   and [VM laboratory](docs/development/VM_LAB.md)

@@ -29,11 +29,12 @@ semantics — ACCEPTED for M0 on 20 September 2026; representation EXPERIMENTAL.
 
 M0.1 corrects implicit delegation authority following maintainer review; ADR 0001
 is accepted as the M0 reference-model decision; layouts remain EXPERIMENTAL.
-M1 hosted appliance work is explicitly authorised; M2–M5 are not.
+M1 hosted appliance was subsequently accepted; M2 is explicitly authorised.
+M3–M5 remain unauthorised.
 
 [ADR 0003](0003-m1-hosted.md): bounded Linux-hosted M1 broker, UUID profiles,
-viewer lifecycle and experimental execution records. Implementation choices are
-EXPERIMENTAL within explicit M1 authority; M1 awaits review, no stable format or
+viewer lifecycle and experimental execution records. ACCEPTED for the bounded M1
+experiment; representations remain EXPERIMENTAL, with no stable format or
 native-substrate approval. Evidence: [M1](../evidence/m1.md).
 
 M1 ACCEPTED — 20 September 2026, at reviewed head 8e910332; PR #1 merged by
@@ -41,3 +42,8 @@ normal merge 0817912. [Acceptance](../evidence/m1-acceptance.md) defines the
 bounded scope of accepted ADR 0003. M2 native experience is now explicitly
 authorised on a separate branch; M3–M5 are not. Earlier entries describe their
 original decision-time scope.
+
+[ADR 0004](0004-m2-hosted-native.md): M2 SQLite object backing, current grants,
+private inherited sessions, Landlock/seccomp and owner authentication. EXPERIMENTAL
+implementation within explicit M2 authority, pending maintainer review. Not the
+M3 native substrate or final IPC/storage design.
