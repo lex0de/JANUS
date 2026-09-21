@@ -115,7 +115,10 @@ reaped. Optional VTX/nested KVM/physical tests NOT RUN. No M4/M5 or persistence 
 
 ## Next permitted action
 
-Finish scoped M3 publication/evidence checkpoint and obtain maintainer review.
+M3 PR #3 is OPEN and unmerged against main:
+https://github.com/lex0de/JANUS/pull/3
+Implementation 0a4bd5f; evidence 91a07751e046a360195a81421ec14596820fa3b4.
+Both pushed; obtain maintainer review.
 Do not merge M3, select a permanent substrate, begin M4/M5, or reinstall removed
 viewer packages. Static composition, live delegation and actual PD reconstruction
 remain open. Single-agent test/review shared-assumption risk remains.
