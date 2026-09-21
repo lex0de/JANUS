@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- SPDX-License-Identifier: ISC -->
+<!-- Experimental static authority graph; all PDs CPU 0, no VTX. -->
+<system>
+ <memory_region name="object_private" size="0x1000" />
+ <protection_domain name="control" priority="240" budget="2000" period="10000" stack_size="0x4000">
+  <program_image path="control.elf" />
+  <ioport id="0" addr="0x3f8" size="8" />
+  <protection_domain name="attacker" id="1" priority="70" budget="1000" period="10000" stack_size="0x2000">
+   <program_image path="attacker.elf" />
+  </protection_domain>
+ </protection_domain>
+ <protection_domain name="object" priority="250" passive="true" budget="1000" period="10000" stack_size="0x4000">
+  <program_image path="object.elf" />
+  <map mr="object_private" vaddr="0x40000000" perms="rw" setvar_vaddr="private_page" />
+ </protection_domain>
+ <protection_domain name="world_a" priority="100" budget="1000" period="10000" stack_size="0x2000">
+  <program_image path="world.elf" />
+ </protection_domain>
+ <protection_domain name="world_b" priority="90" budget="1000" period="10000" stack_size="0x2000">
+  <program_image path="world.elf" />
+ </protection_domain>
+ <channel><end pd="control" id="0" pp="true" notify="false" /><end pd="object" id="0" /></channel>
+ <channel><end pd="world_a" id="0" pp="true" notify="false" /><end pd="object" id="1" /></channel>
+ <channel><end pd="world_b" id="0" pp="true" notify="false" /><end pd="object" id="2" /></channel>
+ <channel><end pd="control" id="1" notify="false" /><end pd="object" id="3" /></channel>
+ <channel><end pd="control" id="2" /><end pd="attacker" id="0" notify="false" /></channel>
+</system>

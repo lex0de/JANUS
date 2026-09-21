@@ -23,7 +23,9 @@ help:
 	    'make test-hosted-live FIXTURE=artifacts/new-lab - explicit disposable VM' \
 	    'make native CC=gcc - M2 object service/tools and static note' \
 	    'make test-native CC=gcc - M2 unit/storage process-crash tests' \
-	    'make test-native-live CC=gcc FIXTURE=artifacts/new-m2 - explicit M2 lab'
+	    'make test-native-live CC=gcc FIXTURE=artifacts/new-m2 - explicit M2 lab' \
+	    'make test-m3-host CC=gcc - portable M3 authority tests' \
+	    'make test-m3-live - explicit signed SDK required; see SUBSTRATE_M3.md'
 
 check:
 	$(PYTHON) tools/check-bootstrap.py
@@ -127,3 +129,27 @@ format-native:
 test-native-live: native hosted test-native
 	@test -n "$(FIXTURE)" || { echo 'Set FIXTURE to a NEW directory under artifacts/'; exit 2; }
 	$(PYTHON) tests/native/live.py --fixture "$(FIXTURE)" --cc "$(CC)"
+
+M3_SOURCES = lib/substrate/model.c tests/substrate/test_model.c
+.PHONY: m3 test-m3-host test-m3-sanitize test-m3-live format-m3 analyze-m3
+m3:
+	$(PYTHON) tools/m3-build.py --sdk "$(MICROKIT_SDK)" --archive "$(MICROKIT_ARCHIVE)" --signature "$(MICROKIT_SIGNATURE)" --key "$(MICROKIT_KEY)" --cc "$(CC)"
+
+test-m3-host:
+	mkdir -p out
+	$(CC) $(MODEL_FLAGS) $(CFLAGS) -Iinclude $(M3_SOURCES) $(LDFLAGS) -o out/test-m3-$(CC)
+	./out/test-m3-$(CC)
+
+test-m3-sanitize:
+	ASAN_OPTIONS=detect_leaks=1:halt_on_error=1 UBSAN_OPTIONS=halt_on_error=1:print_stacktrace=1 $(MAKE) test-m3-host CC=$(CC) CFLAGS='-fno-omit-frame-pointer -fsanitize=address,undefined -fno-sanitize-recover=all' LDFLAGS='-fsanitize=address,undefined'
+
+test-m3-live: m3
+	@test -n "$(M3_LOG)" || { echo 'Set M3_LOG to a NEW log under artifacts/'; exit 2; }
+	$(PYTHON) tools/m3-live.py --log "$(M3_LOG)"
+
+format-m3:
+	clang-format --dry-run --Werror include/janus/substrate/*.h lib/substrate/*.c platform/microkit/*.c platform/microkit/*.h tests/substrate/*.c
+
+analyze-m3:
+	mkdir -p out
+	$(CC) $(MODEL_FLAGS) -Iinclude $(ANALYZE) -c lib/substrate/model.c -o out/analyze-m3.o
