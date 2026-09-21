@@ -30,7 +30,7 @@ semantics — ACCEPTED for M0 on 20 September 2026; representation EXPERIMENTAL.
 M0.1 corrects implicit delegation authority following maintainer review; ADR 0001
 is accepted as the M0 reference-model decision; layouts remain EXPERIMENTAL.
 M1 hosted appliance was subsequently accepted; M2 is explicitly authorised.
-M3–M5 remain unauthorised.
+M3 is now explicitly authorised as a substrate experiment; M4–M5 are not.
 
 [ADR 0003](0003-m1-hosted.md): bounded Linux-hosted M1 broker, UUID profiles,
 viewer lifecycle and experimental execution records. ACCEPTED for the bounded M1
@@ -45,5 +45,9 @@ original decision-time scope.
 
 [ADR 0004](0004-m2-hosted-native.md): M2 SQLite object backing, current grants,
 private inherited sessions, Landlock/seccomp and owner authentication. EXPERIMENTAL
-implementation within explicit M2 authority, pending maintainer review. Not the
-M3 native substrate or final IPC/storage design.
+representation, ACCEPTED for bounded M2 on 21 September 2026 at 61c2830.
+See [acceptance](../evidence/m2-acceptance.md). Not a final IPC/storage design.
+
+M3 Microkit 2.3.1 non-VT-x x86-64 experiment explicitly authorised; permanent
+substrate selection remains OPEN. The maintainer also explicitly requested public
+repository visibility; publication provenance clarification is pending separately.

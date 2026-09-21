@@ -36,8 +36,8 @@ no trademark licence. Inherited instruction-provenance ambiguity remains recorde
 Canonical whitepaper and supplied assets are unchanged.
 
 M1 merge/acceptance and human-facing README cleanup on main are authorised.
-M2 native experience is authorised on m2-native-experience with an unmerged PR;
-M3–M5 are not. ADR 0003 is accepted for M1 only, not stable product decisions.
+M2 is accepted at 61c2830 and merged by 195169b. M3 Microkit 2.3.1 non-VT-x
+x86-64 experiment is authorised on m3-capability-substrate; M4–M5 are not. ADR 0003 is accepted for M1 only, not stable product decisions.
 No secure kiosk, native capability isolation, durable replay/anti-rollback,
 power-loss-tested object storage, physical/DMA isolation, trusted physical recovery,
 native kernel or stable public API. M0 remains serial caller-owned memory and
@@ -66,9 +66,10 @@ ignored artifacts/; generated builds in out/. Nested L2 boot NOT RUN.
 
 ## M2 checkpoint
 
-Branch m2-native-experience is ready for maintainer review, not accepted or merged.
-PR #2: https://github.com/lex0de/JANUS/pull/2 (OPEN, base main, PRIVATE repo).
-Implementation 4df4a64; validation/evidence b007d50 pushed and remote-verified.
+M2 ACCEPTED — 21 September 2026 by explicit maintainer review at
+61c2830e417f1a0106799cfb839523a631744b52. PR #2 was verified exact, then merged
+normally as 195169b9c12845cfd26eb8560b951601e0f66f93. Main before merge was
+5cd4620, with no unexpected commits. See docs/evidence/m2-acceptance.md.
 New C17 object service/owner tools, inherited socketpair sessions, static note app,
 Landlock ABI 6 plus seccomp, SQLite current grants/revisions and reconstruction.
 Knowing an object ID gives no authority; current grants are checked per admission.
@@ -92,5 +93,12 @@ M1 merge 0817912; acceptance 153734a; human README 1906f99 and whitespace fix
 
 ## Next permitted action
 
-Maintainer review of the M2 pull request. Do not merge M2 or begin M3–M5.
-Do not reinstall the removed viewer stack. Stop at M2 READY FOR REVIEW.
+Push M2 acceptance/status on main, then create m3-capability-substrate. Compare
+substrates in an ADR, verify the signed Microkit 2.3.1 SDK, implement bounded
+non-VT-x x86_64_generic PD/channel tests; final acceptance run release config.
+Use evidence and boundary review. Stop at M3 READY FOR REVIEW or PARTIAL/BLOCKED.
+Do not merge M3, begin M4/M5, or reinstall removed viewer packages.
+
+Public visibility is explicitly authorised by the maintainer's final instruction.
+Repository currently remains private pending audit and clarification of the
+inherited-guideline redistribution provenance gap recorded in LICENSING.md.

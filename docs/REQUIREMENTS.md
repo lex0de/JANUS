@@ -92,3 +92,10 @@ not a reinterpretation of historical M0 model tests or M1 viewer evidence.
 | J-016 | Malformed owner/world requests rejected; owner secret checked first | Explicit experimental packets, no arbitrary SQL/commands |
 
 M2 results await maintainer review. M3–M5, nested KVM and physical tests are NOT RUN.
+
+## M2 acceptance
+
+M2 ACCEPTED — 21 September 2026, by explicit maintainer review at 61c2830.
+[Acceptance](evidence/m2-acceptance.md) bounds these results; prior READY FOR
+REVIEW evidence remains historical. M3 capability-substrate work is authorised;
+M4–M5 are not. Linux M2 evidence does not establish a native substrate proof.

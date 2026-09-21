@@ -70,13 +70,14 @@ Milestones follow whitepaper §14.2 and advance through review and evidence.
 | --- | --- | --- |
 | M0 — Contracts | Accepted | Reviewed experimental contracts and executable reference model |
 | M1 — Hosted appliance | Accepted | UUID-bound guest control, presentation lifecycle and software recovery |
-| M2 — Native experience | Ready for review | Native document tool, enforced object grants and activity reconstruction |
-| M3 — Substrate experiment | Planned; not started | Evaluate a native capability substrate |
+| M2 — Native experience | Accepted | Native document tool, enforced object grants and activity reconstruction |
+| M3 — Substrate experiment | In progress | Capability substrate experiment with seL4 Microkit 2.3.1 |
 | M4 — Hardware ownership | Planned; not started | Device assignment, withdrawal, reset and quarantine |
 | M5 — Personal alpha | Planned; not started | Daily-use activities, updates, backup and measured behaviour |
 
 See [M0 acceptance](docs/evidence/m0-acceptance.md),
-[M1 acceptance](docs/evidence/m1-acceptance.md) and the
+[M1 acceptance](docs/evidence/m1-acceptance.md),
+[M2 acceptance](docs/evidence/m2-acceptance.md) and the
 [engineering roadmap](BOOTSTRAP_PLAN.md). Acceptance preserves the documented
 experimental limitations; it does not freeze an ABI or storage format.
 
@@ -93,11 +94,11 @@ to undo an unwanted package-provided USB-access policy. The recorded results
 remain valid; new viewer tests require an approved dependency setup. M2 does not
 require that viewer stack.
 
-The M2 branch adds a small native note application, SQLite-backed versioned
+M2 adds a small native note application, SQLite-backed versioned
 objects, current owner-issued grants and activity reconstruction. Its Linux
 Landlock/seccomp sandbox denies direct access to the backing store; private
 inherited endpoints bind session authority. Process-crash tests exercise real
-commit boundaries. These results are [ready for review](docs/evidence/m2.md).
+commit boundaries. These bounded results are [accepted](docs/evidence/m2-acceptance.md).
 
 There is no native JANUS kernel, secure kiosk, physical recovery mechanism or
 proven device/DMA isolation. Durable authority, anti-rollback and final public

@@ -1,8 +1,10 @@
 <!-- SPDX-License-Identifier: CC-BY-4.0 -->
 # ADR 0004: M2 hosted object and native-world boundary
 
-Status: EXPERIMENTAL within explicit maintainer M2 authority; not maintainer
-acceptance of the result, a final disk/IPC format or M3 substrate selection.
+Status: ACCEPTED for the bounded M2 experiment — 21 September 2026, on explicit
+maintainer review of 61c2830e417f1a0106799cfb839523a631744b52. Concrete mechanisms
+and representations remain EXPERIMENTAL, not final disk/IPC formats or an M3
+substrate selection. See [acceptance](../evidence/m2-acceptance.md).
 
 Use the SQLite C API as the bounded object/grant/activity backing. Fixed prepared
 SQL only; foreign_keys ON, journal_mode DELETE, synchronous FULL, trusted_schema
