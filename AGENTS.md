@@ -202,8 +202,9 @@ authored JANUS software defaults to ISC; JANUS documentation and the whitepaper
 are CC BY 4.0. Imported/derived material retains all applicable upstream terms.
 Rights in the JANUS name/logo are retained by Danyal A. Samak. No trademark
 licence or registration is implied. `docs/JANUS_logo.png` is excluded from the
-software/documentation grants. Keep the repository PRIVATE; licence selection
-does not authorise a release, public announcement or third-party distribution.
+software/documentation grants. The maintainer explicitly authorised public
+repository visibility on 21 September 2026; licence selection alone grants no
+release, public announcement or third-party distribution authority.
 
 New independently authored JANUS software should normally be
 licensed under the ISC licence.
@@ -222,7 +223,7 @@ revision/version, imported file paths, applicable licence, required notices and
 attribution, local modifications, and redistribution restrictions where applicable.
 Do not copy incompatible donor code and attempt to convert it to ISC through
 mechanical or AI-assisted rewriting. Preserve upstream notices. See LICENSING.md
-for the unresolved provenance of inherited instruction wording. Do not invent
+for the 21 September 2026 rights-holder clarification of inherited wording. Do not invent
 replacement branding; supplied artwork is retained under TRADEMARKS.md.
 
 ## Validation and handoff

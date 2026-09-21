@@ -142,8 +142,8 @@ See [licensing scope](LICENSING.md) and the [licence overview](LICENSE).
 
 The JANUS name and logo, including `docs/JANUS_logo.png`, are excluded from those
 grants. Rights are retained by Danyal A. Samak; no trademark licence or registration
-is implied. See [branding policy](TRADEMARKS.md). The repository remains private;
-licensing does not authorise a release or public announcement.
+is implied. See [branding policy](TRADEMARKS.md). Public repository visibility was separately authorised by the maintainer;
+licensing alone does not authorise a release or public announcement.
 
 ## Author
 

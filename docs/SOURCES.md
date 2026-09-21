@@ -76,3 +76,19 @@ its delivery state, not the current checkout. No artwork was generated in M0.
 PDF/DOCX author metadata identifies Danyal A. Samak; private inclusion is not a
 public redistribution licence. The canonical design source remains the retained
 architecture Markdown and its digest above.
+
+## Guideline rights clarification — 21 September 2026
+
+Danyal A. Samak identifies the earlier supplied guideline as his own Mercuron /
+System V project AGENTS.md and confirms rights in the original independently
+authored wording. He expressly permits JANUS to use, adapt, modify and
+redistribute that owned material under CC BY 4.0 from 21 September 2026.
+Copyright (c) 2026 Danyal A. Samak <dabsamak@tuta.com>.
+
+Source-file SHA-256 remains
+`b884801d390206ee2b0f3dbbb108e0f3ac6ee14da72e093b5cc50233941d1658`.
+This is a rights-holder clarification, not a guessed upstream licence or a new
+source revision. The ambiguity is resolved for his material only. Third-party
+quotations/code/licence texts and other independent rights are excluded and keep
+their applicable terms. Historical evidence records the then-unresolved state.
+See [ADR 0005](decisions/0005-guideline-provenance-publication.md) and LICENSING.md.

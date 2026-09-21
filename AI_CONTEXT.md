@@ -32,7 +32,8 @@ Initial ACPI and viewer-runtime test failures are retained in evidence.
 Maintainer: Danyal A. Samak <dabsamak@tuta.com>, https://www.cryogenix.org.
 Approved licensing (20 September 2026, ADR 0002): independent software ISC;
 docs/whitepaper CC BY 4.0; upstream terms preserved; name/logo rights retained,
-no trademark licence. Inherited instruction-provenance ambiguity remains recorded.
+no trademark licence. Inherited guideline rights clarified by the rights holder on 21 September 2026;
+CC BY 4.0 applies to his material, preserving third-party exclusions (ADR 0005).
 Canonical whitepaper and supplied assets are unchanged.
 
 M1 merge/acceptance and human-facing README cleanup on main are authorised.
@@ -100,5 +101,5 @@ Use evidence and boundary review. Stop at M3 READY FOR REVIEW or PARTIAL/BLOCKED
 Do not merge M3, begin M4/M5, or reinstall removed viewer packages.
 
 Public visibility is explicitly authorised by the maintainer's final instruction.
-Repository currently remains private pending audit and clarification of the
-inherited-guideline redistribution provenance gap recorded in LICENSING.md.
+Guideline provenance clarification is recorded; visibility change follows the
+tracked-history publication audit. No release/tag or third-party relicensing.

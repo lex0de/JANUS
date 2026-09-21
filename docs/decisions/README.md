@@ -17,7 +17,8 @@ approval and scope. Drafts and experimental defaults must remain labelled.
 | Physical target and device assignment | OPEN | Inventory and explicit test authority needed |
 | Recovery and cryptographic/key policy | OPEN | Threat model and maintainer review |
 | Software/documentation licensing and branding | MAINTAINER APPROVED — 20 September 2026 | [ADR 0002](0002-licensing.md): ISC / CC BY 4.0 / branding excluded |
-| Public visibility, release and announcement | NOT AUTHORISED | Repository remains PRIVATE |
+| Public visibility | MAINTAINER APPROVED — 21 September 2026 | Explicit M3 prompt; ADR 0005 records provenance clearance |
+| Release, tags and announcement | NOT AUTHORISED | No release or announcement authority |
 
 Create numbered ADRs only when work reaches the decision. Use
 `docs/templates/ADR.md`. Record alternatives, evidence, consequences, rollback,
@@ -50,4 +51,4 @@ See [acceptance](../evidence/m2-acceptance.md). Not a final IPC/storage design.
 
 M3 Microkit 2.3.1 non-VT-x x86-64 experiment explicitly authorised; permanent
 substrate selection remains OPEN. The maintainer also explicitly requested public
-repository visibility; publication provenance clarification is pending separately.
+repository visibility; owned guideline provenance is resolved by [ADR 0005](0005-guideline-provenance-publication.md).
