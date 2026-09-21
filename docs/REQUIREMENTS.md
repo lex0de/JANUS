@@ -99,3 +99,26 @@ M2 ACCEPTED — 21 September 2026, by explicit maintainer review at 61c2830.
 [Acceptance](evidence/m2-acceptance.md) bounds these results; prior READY FOR
 REVIEW evidence remains historical. M3 capability-substrate work is authorised;
 M4–M5 are not. Linux M2 evidence does not establish a native substrate proof.
+
+## M3 capability-substrate evidence — 21 September 2026
+
+M3 READY FOR REVIEW, not accepted. See [evidence](evidence/m3.md),
+[boundary review](evidence/m3-boundary-review.md), [contract](contracts/substrate-m3.md)
+and [proof/dependency boundary](evidence/m3-dependencies.md).
+
+| ID | Additional M3 result | Scope |
+| --- | --- | --- |
+| J-002 | B/C PASS: known ID denied; other-world handle denied by actual channel-derived identity | Two static seL4/Microkit world PDs |
+| J-003 | Explicit UNSUPPORTED live delegation; owner default non-delegable | M0 delegation semantics unchanged |
+| J-004 | H PASS: saved activity after revoke cannot reacquire authority | One in-memory hint record, no durability |
+| J-005 | E/F PASS: revoke denies old/new work; regrant does not revive handles | Serial quiescent PPC admission, no asynchronous drain |
+| J-006 | G/H PASS: retained token bytes fail after incarnation rotation | Semantic rotation, not actual PD reconstruction |
+| J-009 | K PASS: handle/request limits, owner capacity, B progress; passive service charged to caller context | Static budgets and bounded experiment; no hard real-time guarantee |
+| J-013 | I/L PASS: trusted parent stops sacrificial faulty child; owner and B continue | Software fault recovery, no physical secure attention |
+| J-014 | J PASS: revision conflict preserves current content | Tiny in-memory object, M2 durable experiment retained separately |
+| J-015 | TCB/proof comparison recorded; proof inheritance NOT ESTABLISHED | QEMU release non-VTX, no whole-JANUS verification claim |
+| J-016 | D/J PASS: bounded register grammar, owner operations denied on world channels | SDF/capDL authority graph reviewed |
+
+M0–M2 acceptance does not cover M3. M4/M5, optional VTX, nested KVM and physical
+hardware validation remain NOT RUN. GCC target CONTROL analyzer limitation is
+reported explicitly rather than hidden behind passing portable checks.

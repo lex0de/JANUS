@@ -92,14 +92,35 @@ Live owned children are stopped; private DBs/keys/logs remain ignored in artifac
 M1 merge 0817912; acceptance 153734a; human README 1906f99 and whitespace fix
 5cd4620 were pushed on main before M2. See docs/evidence/m2.md and dependency record.
 
+## M3 checkpoint
+
+M3 READY FOR REVIEW, not accepted. Branch m3-capability-substrate is based on
+2b271799; implementation 0a4bd5f78ff963b2af960fcf03f74c9ff3cdc3da. Microkit
+2.3.1 official SDK signature and pinned fingerprint verified;
+non-VTX x86_64_generic/release boots under QEMU TCG with GCC and Clang PD builds.
+Two world PDs use distinct channel badges; owner authority stays in CONTROL.
+Live A–L PASS, including private-page fault containment, stale/revoked handles,
+activity revalidation, quota exhaustion and caller-context service work with
+independent CONTROL progress. Incarnation rotation is semantic, not a PD restart.
+See docs/evidence/m3.md, m3-boundary-review.md, m3-dependencies.md and ADR 0006.
+
+Host M0/M1/M2 tests unchanged: 7176/223/4320 assertions per GCC/Clang plain and
+ASan/UBSan run. Final M3 portable tests: 8907 checks in all four modes. Portable
+static analyses and all Clang target analyses pass. GCC target CONTROL analyzer
+reports an SDK error-path uninitialised-result diagnostic after its intentional
+low-page crash; retained FAIL/coverage limitation, not suppressed. Other GCC PD
+analyses pass. Exact kernel proof inheritance NOT ESTABLISHED (MCS/config limits).
+No host package/policy changes; SDK/build/raw logs ignored; owned QEMU children
+reaped. Optional VTX/nested KVM/physical tests NOT RUN. No M4/M5 or persistence port.
+
 ## Next permitted action
 
-Push M2 acceptance/status on main, then create m3-capability-substrate. Compare
-substrates in an ADR, verify the signed Microkit 2.3.1 SDK, implement bounded
-non-VT-x x86_64_generic PD/channel tests; final acceptance run release config.
-Use evidence and boundary review. Stop at M3 READY FOR REVIEW or PARTIAL/BLOCKED.
-Do not merge M3, begin M4/M5, or reinstall removed viewer packages.
+Finish scoped M3 publication/evidence checkpoint and obtain maintainer review.
+Do not merge M3, select a permanent substrate, begin M4/M5, or reinstall removed
+viewer packages. Static composition, live delegation and actual PD reconstruction
+remain open. Single-agent test/review shared-assumption risk remains.
 
-Public visibility is explicitly authorised by the maintainer's final instruction.
-Guideline provenance clarification is recorded; visibility change follows the
-tracked-history publication audit. No release/tag or third-party relicensing.
+Repository PUBLIC by explicit maintainer instruction, verified after history audit.
+Owned inherited guideline CC BY 4.0 clarification is recorded in ADR 0005,
+LICENSING.md and docs/SOURCES.md, preserving the original source SHA-256.
+No release/tag or third-party relicensing occurred.
