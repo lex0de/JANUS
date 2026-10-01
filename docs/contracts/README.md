@@ -40,3 +40,7 @@ independent revision counters; numeric indices are test references only.
 [M2 native contract](native-m2.md) separately defines the experimental enforced
 Linux object/session/activity boundary. It does not turn the M0 model above into
 an OS security boundary. See ADR 0004 and the M2 evidence for scope and limits.
+
+[M3 substrate contract](substrate-m3.md): experimental channel-bound in-memory
+objects, incarnation/activity checks and passive service budgets on Microkit.
+M3 is READY FOR REVIEW, not accepted; this does not replace M0–M2 contracts.

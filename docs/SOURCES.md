@@ -92,3 +92,14 @@ source revision. The ambiguity is resolved for his material only. Third-party
 quotations/code/licence texts and other independent rights are excluded and keep
 their applicable terms. Historical evidence records the then-unresolved state.
 See [ADR 0005](decisions/0005-guideline-provenance-publication.md) and LICENSING.md.
+
+## M3 external substrate — 21 September 2026
+
+New JANUS substrate C/Python/SDF and tests are independently authored ISC;
+new explanatory documentation CC BY 4.0. No Microkit/seL4 implementation is copied
+or vendored. The signed external Microkit 2.3.1 SDK, exact seL4 source trace,
+licence metadata, binary/config hashes and usage are recorded in
+[evidence/m3-dependencies.md](evidence/m3-dependencies.md). Local upstream
+modifications: none. Generated linked images remain ignored, with no binary
+release or distribution in this task. Genode was compared from primary documents
+only; no Genode source or binary was acquired. Its licence is not inherited by JANUS.

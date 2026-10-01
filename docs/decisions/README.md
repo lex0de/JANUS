@@ -52,3 +52,10 @@ See [acceptance](../evidence/m2-acceptance.md). Not a final IPC/storage design.
 M3 Microkit 2.3.1 non-VT-x x86-64 experiment explicitly authorised; permanent
 substrate selection remains OPEN. The maintainer also explicitly requested public
 repository visibility; owned guideline provenance is resolved by [ADR 0005](0005-guideline-provenance-publication.md).
+
+[ADR 0006](0006-m3-capability-substrate.md): Microkit 2.3.1 x86_64_generic,
+non-VTX/release, is the maintainer-authorised M3 experimental substrate. Comparison
+retains Genode as relevant and custom-kernel work deferred. M3 READY FOR REVIEW,
+not accepted; permanent kernel/framework choice remains OPEN. See
+[M3 evidence](../evidence/m3.md), including the proof and analyzer limitations.
+Public visibility was applied and verified after ADR 0005's provenance/history audit.

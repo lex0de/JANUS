@@ -1,7 +1,8 @@
 # JANUS bootstrap and first engineering task
 
 Current checkpoint: B0 complete; M0/M1 accepted on 20 September 2026; M2 accepted
-on 21 September 2026. M3 capability-substrate work is explicitly authorised. The original B0/M0
+on 21 September 2026. M3 capability-substrate experiment is READY FOR REVIEW,
+not accepted; see docs/evidence/m3.md. M4/M5 remain out of scope. The original B0/M0
 execution plan below is retained; actual evidence is in `docs/evidence/`.
 This is not evidence of completed work. B0 is tooling setup, not a renamed
 whitepaper milestone. M0-M5 retain the whitepaper's section 14 definitions.

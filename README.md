@@ -10,8 +10,9 @@ resume and recover. The goal is a coherent personal system with dependable
 boundaries—not universal trust in everything running under one account.
 
 JANUS is research software, **not a production security system**. Its current
-implementations run on Linux; the final native kernel and protection substrate
-have not been selected. Start with the
+experiments include Linux-hosted services and a small Microkit capability system;
+the permanent native kernel and protection substrate have not been selected.
+Start with the
 [architecture whitepaper](docs/architecture/JANUS_Whitepaper_v0.1.md).
 
 ## Why JANUS exists
@@ -71,7 +72,7 @@ Milestones follow whitepaper §14.2 and advance through review and evidence.
 | M0 — Contracts | Accepted | Reviewed experimental contracts and executable reference model |
 | M1 — Hosted appliance | Accepted | UUID-bound guest control, presentation lifecycle and software recovery |
 | M2 — Native experience | Accepted | Native document tool, enforced object grants and activity reconstruction |
-| M3 — Substrate experiment | In progress | Capability substrate experiment with seL4 Microkit 2.3.1 |
+| M3 — Substrate experiment | Ready for review; not accepted | Capability substrate experiment with seL4 Microkit 2.3.1 |
 | M4 — Hardware ownership | Planned; not started | Device assignment, withdrawal, reset and quarantine |
 | M5 — Personal alpha | Planned; not started | Daily-use activities, updates, backup and measured behaviour |
 
@@ -100,6 +101,11 @@ Landlock/seccomp sandbox denies direct access to the backing store; private
 inherited endpoints bind session authority. Process-crash tests exercise real
 commit boundaries. These bounded results are [accepted](docs/evidence/m2-acceptance.md).
 
+M3 now exercises two isolated world protection domains on seL4 Microkit 2.3.1:
+channel-bound object access, stale authority, owner separation, resource limits
+and fault containment. Release QEMU tests pass; the substrate remains an
+experiment, with no inherited formal-verification claim. See [M3 evidence](docs/evidence/m3.md).
+
 There is no native JANUS kernel, secure kiosk, physical recovery mechanism or
 proven device/DMA isolation. Durable authority, anti-rollback and final public
 interfaces remain open work. See the [decision register](docs/decisions/README.md).
@@ -118,6 +124,7 @@ make test-hosted-sanitize CC=gcc
 make native CC=gcc            # M2 service/tools; SQLite development files required
 make test-native CC=gcc       # M2 unit and storage-process crash tests
 make test-native-sanitize CC=gcc
+make test-m3-host CC=gcc      # M3 portable authority tests; no SDK or VM needed
 ```
 
 Ordinary tests never create a VM. Consult [contributor setup](CONTRIBUTING.md)
@@ -129,6 +136,7 @@ and the [hosted M1 runbook](docs/development/HOSTED_M1.md) before any live test.
 - [Contracts](docs/contracts/README.md) and [requirements](docs/REQUIREMENTS.md)
 - [Roadmap and milestone plan](BOOTSTRAP_PLAN.md)
 - [Decisions](docs/decisions/README.md)
+- [M3 substrate runbook](docs/development/SUBSTRATE_M3.md) and [M3 evidence](docs/evidence/m3.md)
 - [M2 native runbook](docs/development/NATIVE_M2.md) and [M2 evidence](docs/evidence/m2.md)
 - [M1 evidence](docs/evidence/m1.md) and [boundary review](docs/evidence/m1-boundary-review.md)
 - [Development conventions](docs/development/CODING.md), [host setup](docs/development/HOST.md)
