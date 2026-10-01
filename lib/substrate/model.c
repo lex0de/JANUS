@@ -130,13 +130,13 @@ owner(struct jm_state *s, const uint64_t *q, uint64_t *r)
 static unsigned int
 world(struct jm_state *s, unsigned int caller, const uint64_t *q, uint64_t *r)
 {
-	if (q[1] >= JM_GRANT)
-		return JM_DENIED;
 	unsigned int w = caller - 1;
 	struct jm_world *world = &s->worlds[w];
 	if (world->requests >= JM_QUOTA)
 		return JM_LIMIT;
 	world->requests++;
+	if (q[1] >= JM_GRANT)
+		return JM_DENIED;
 	if (q[1] == JM_DELEGATE)
 		return JM_UNSUPPORTED;
 	if (q[1] == JM_WORK)

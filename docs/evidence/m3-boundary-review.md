@@ -94,3 +94,37 @@ No unresolved JANUS authority bug was found in this bounded review. That is not
 proof of absence. The retained SDK analyzer diagnostic and single-agent oracle risk
 are explicit review inputs. M0–M2 code is unchanged. M3 awaits maintainer review;
 M4/M5 and a permanent substrate choice remain unauthorised.
+
+## Quota correction review, 1 October 2026
+
+The PR review identified a confirmed Medium accounting bug missed by the original
+review: owner-only requests over world channels returned DENIED before consuming
+quota. The original full-state-equality test encoded that incorrect assumption.
+Historical review text above is retained; it does not describe the corrected
+accounting. See [correction evidence](m3-quota.md) for exact failures and outcomes.
+
+The bounded patch charges well-shaped world requests before owner-operation
+denial. Shape validation still precedes mutation, and caller identity still comes
+from the channel. Counter comparison precedes increment, preventing wrap or more
+than 64 admissions. Only the caller's accounting may change on these denials;
+owner policy, object content, handles and other-world state remain unchanged.
+After exhaustion, valid world operations return LIMIT with zero error data.
+CONTROL's independent owner path remains usable without world-quota checks.
+
+Host rows test all six owner operations and both world identities through the
+64/65 boundary, zeroed responses, other-world reads and revocation/rotation.
+The corrected oracle fails on the original code. Actual GCC/Clang target runs
+exercise denied-request exhaustion and independent CONTROL/B progress; the host
+verifier requires a new quota marker. No new authority path, allocation, pointer
+ownership, asynchronous revocation or persistence behavior is added.
+
+No additional authority defect was found in this patch review. This remains a
+single-agent review, not independent human acceptance or proof. Whole-M3 Clang 21
+formatting fails on an unchanged baseline line; changed-file checks pass. The Make
+Clang analyzer command fails on an unused option; direct portable analysis passes.
+Historical target CONTROL analyzer limits and proof boundaries remain. The
+maintainer accepted the correction for publication to PR #3, with final review
+required at its new head. **M3 READY FOR SECOND REVIEW**, not accepted. No
+implementation/test/verifier code changed after the accepted live and sanitizer
+runs. The final host/analysis/changed-file-format/bootstrap reruns pass; Makefile
+portability debt, formatter drift and single-agent shared assumptions remain.

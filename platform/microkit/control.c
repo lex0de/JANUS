@@ -167,12 +167,14 @@ notified(microkit_channel ch)
 		owner(JM_INSPECT, a, 0, 0, r);
 		if (r[6] != JM_QUOTA || r[7] != JM_HANDLES)
 			bad();
+		inspect(a, 2, 0xcccc);
 		owner(JM_REVOKE, a, 0, 0, r);
 		owner(JM_GRANT, a, 0, 3, r);
 		start(2, 11, 0);
 		break;
 	case 11:
 		say("M3 PASS K");
+		say("M3 PASS denied-owner quota");
 		owner(JM_ROTATE, 1, 0, 0, r);
 		work_control = 0;
 		start(1, 12, 0);

@@ -52,6 +52,7 @@ def main():
             print(f'QEMU child exit={child.returncode} (harness termination after marker/timeout)', flush=True)
     required = [f'M3 PASS {letter}\n'.encode() for letter in 'ABCDEFGHIJKL']
     required += [b'M3 COMPLETE PASS\n', b'M3 PASS caller-sc control-independent',
+		 b'M3 PASS denied-owner quota\n',
                  b'M3 FAULT child=1 unmapped=0x40000000']
     if b'M3 FAIL' in data or not all(marker in data for marker in required):
         raise SystemExit('FAIL: missing scenario/fault/accounting milestone')

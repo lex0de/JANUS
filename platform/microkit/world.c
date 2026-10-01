@@ -8,6 +8,10 @@ expect(uint64_t *q, uint64_t expected, uint64_t *r)
 	exchange(q, r, 0, JM_WORDS);
 	if (r[0] != expected)
 		failures++;
+	if (expected != JM_OK && expected != JM_CONFLICT)
+		for (size_t i = 1; i < JM_WORDS; i++)
+			if (r[i])
+				failures++;
 }
 static uint64_t
 acquire(uint64_t id)
@@ -121,19 +125,34 @@ notified(microkit_channel ch)
 			failures++;
 		get(old_handle, JM_OK, 0xcccc);
 		break;
-	case 10:
+	case 10: {
+		const uint64_t controls[][JM_WORDS] = {
+		    {1, 32, UINT64_C(0x100000001), 0, 0, 0, 3},
+		    {1, 33, UINT64_C(0x100000001)},
+		    {1, 34, 1},
+		    {1, 35, UINT64_C(0x100000001), 0, 2},
+		    {1, 36, 1},
+		    {1, 37, UINT64_C(0x100000001)}};
 		for (size_t i = 0; i < JM_HANDLES; i++)
 			old_handle = acquire(1);
 		q[1] = JM_ACQUIRE;
 		q[2] = 1;
 		expect(q, JM_LIMIT, r);
-		q[1] = JM_GET;
-		q[2] = 0;
-		q[3] = old_handle;
-		for (size_t i = JM_HANDLES + 1; i < JM_QUOTA; i++)
-			expect(q, JM_OK, r);
-		expect(q, JM_LIMIT, r);
+		/* Four handles plus the failed fifth acquisition consumed five
+		 * admissions. Denied owner calls must consume the rest. */
+		for (size_t i = JM_HANDLES + 1; i < JM_QUOTA; i++) {
+			for (size_t j = 0; j < JM_WORDS; j++)
+				q[j] = controls[i % 6][j];
+			expect(q, JM_DENIED, r);
+		}
+		for (size_t i = 0; i < 6; i++) {
+			for (size_t j = 0; j < JM_WORDS; j++)
+				q[j] = controls[i][j];
+			expect(q, JM_LIMIT, r);
+		}
+		get(old_handle, JM_LIMIT, 0);
 		break;
+	}
 	case 11:
 	case 14:
 		get(old_handle, JM_OK, 0xbbbb);

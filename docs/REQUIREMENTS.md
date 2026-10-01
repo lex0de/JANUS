@@ -122,3 +122,20 @@ and [proof/dependency boundary](evidence/m3-dependencies.md).
 M0–M2 acceptance does not cover M3. M4/M5, optional VTX, nested KVM and physical
 hardware validation remain NOT RUN. GCC target CONTROL analyzer limitation is
 reported explicitly rather than hidden behind passing portable checks.
+
+## Local M3 quota correction, 1 October 2026
+
+See [quota evidence](evidence/m3-quota.md). The PR finding exposed an accounting
+gap in the historical M3 results: denied owner-only world requests were uncharged.
+The maintainer accepted the correction for publication to PR #3; M3 remains
+subject to second review and is not accepted.
+
+| ID | Additional evidence | Boundary |
+| --- | --- | --- |
+| J-009 | PASS owner_quota: six owner operations, both callers, 64/65 admission boundary, other-world access and owner revoke/rotation; live K passes denied-owner exhaustion under GCC/Clang | Portable matrix and static Microkit World A live exhaustion; no exhaustive scheduling or host-wide DoS claim |
+| J-016 | PASS authority/owner_quota and live K: denied owner calls change only caller accounting; malformed calls are uncharged; exhausted replies contain no error data | Channel identity and existing experimental message grammar unchanged |
+
+Environment: this session's Ubuntu 26.04.1, not the historical Debian host.
+Changed-file formatting and direct portable analyses pass; whole-M3 formatting
+and the Make Clang analyzer target retain tool-version failures. No M3 acceptance,
+permanent-substrate or M4/M5 authority follows from this additional evidence.

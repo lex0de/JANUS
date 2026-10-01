@@ -109,10 +109,13 @@ authority(void)
 	    {1, 36, 1},
 	    {1, 37, UINT64_C(0x100000001)}};
 	for (size_t i = 0; i < sizeof(controls) / sizeof(controls[0]); i++) {
-		struct jm_state unchanged = s;
 		for (unsigned int caller = 1; caller <= 2; caller++) {
+			struct jm_state unchanged = s;
+			unchanged.worlds[caller - 1].requests++;
 			jm_dispatch(&s, caller, 0, 8, controls[i], r);
 			CHECK(r[0] == JM_DENIED);
+			for (size_t j = 1; j < JM_WORDS; j++)
+				CHECK(r[j] == 0);
 			CHECK(memcmp(&s, &unchanged, sizeof(s)) == 0);
 		}
 	}
@@ -202,12 +205,82 @@ bounds(void)
 	call(&s, 1, JM_PUT, 0, token, UINT32_MAX, 99, 0, JM_LIMIT, r);
 	CHECK(s.objects[0].content == 0xaaaa);
 }
+static void
+owner_quota(void)
+{
+	/* Literal requests and expected counters follow the contract, rather
+	 * than the implementation's admission decision. */
+	const uint64_t controls[][JM_WORDS] = {
+	    {1, 32, UINT64_C(0x100000001), 0, 0, 0, 3},
+	    {1, 33, UINT64_C(0x100000001)},
+	    {1, 34, 1},
+	    {1, 35, UINT64_C(0x100000001), 0, 1},
+	    {1, 36, 1},
+	    {1, 37, UINT64_C(0x100000001)}};
+	for (unsigned int caller = 1; caller <= 2; caller++) {
+		for (size_t op = 0; op < sizeof(controls) / sizeof(controls[0]);
+		     op++) {
+			struct jm_state s, expected;
+			uint64_t r[JM_WORDS], q[JM_WORDS], token;
+			unsigned int other = caller == 1 ? 2 : 1;
+			uint64_t target = ((uint64_t)caller << 32) | caller;
+			uint64_t peer = ((uint64_t)other << 32) | other;
+			jm_init(&s);
+			call(&s, 0, JM_GRANT, target, 0, 0, 0, 3, JM_OK, r);
+			call(&s, 0, JM_GRANT, peer, 0, 0, 0, 1, JM_OK, r);
+			call(&s, other, JM_ACQUIRE, other, 0, 0, 0, 0, JM_OK,
+			     r);
+			token = r[3];
+			call(&s, 0, JM_SAVE, target, 0, 1, 0, 0, JM_OK, r);
+			for (unsigned int admitted = 1; admitted <= 64;
+			     admitted++) {
+				expected = s;
+				expected.worlds[caller - 1].requests = admitted;
+				jm_dispatch(&s, caller, 0, JM_WORDS,
+				            controls[op], r);
+				CHECK(r[0] == JM_DENIED);
+				for (size_t j = 1; j < JM_WORDS; j++)
+					CHECK(r[j] == 0);
+				CHECK(memcmp(&s, &expected, sizeof(s)) == 0);
+			}
+			expected = s;
+			/* Every owner operation is limited after exhaustion. */
+			for (size_t i = 0;
+			     i < sizeof(controls) / sizeof(controls[0]); i++) {
+				jm_dispatch(&s, caller, 0, JM_WORDS,
+				            controls[i], r);
+				CHECK(r[0] == JM_LIMIT);
+				for (size_t j = 1; j < JM_WORDS; j++)
+					CHECK(r[j] == 0);
+				CHECK(memcmp(&s, &expected, sizeof(s)) == 0);
+			}
+			memcpy(q, controls[op], sizeof(q));
+			q[7] = 1;
+			jm_dispatch(&s, caller, 0, JM_WORDS, q, r);
+			CHECK(r[0] == JM_INVALID);
+			CHECK(memcmp(&s, &expected, sizeof(s)) == 0);
+			call(&s, 0, JM_INSPECT, target, 0, 0, 0, 0, JM_OK, r);
+			CHECK(r[6] == 64 && r[3] == 3);
+			call(&s, other, JM_GET, 0, token, 0, 0, 0, JM_OK, r);
+			CHECK(r[2] == (other == 1 ? 0xaaaa : 0xbbbb));
+			call(&s, 0, JM_REVOKE, target, 0, 0, 0, 0, JM_OK, r);
+			call(&s, 0, JM_INSPECT, target, 0, 0, 0, 0, JM_OK, r);
+			CHECK(r[6] == 64 && r[3] == 0);
+			call(&s, 0, JM_ROTATE, caller, 0, 0, 0, 0, JM_OK, r);
+			CHECK(s.worlds[caller - 1].requests == 0);
+			call(&s, caller, JM_ACQUIRE, caller, 0, 0, 0, 0,
+			     JM_DENIED, r);
+			CHECK(s.worlds[caller - 1].requests == 1);
+		}
+	}
+}
 int
 main(void)
 {
 	malformed();
 	authority();
 	bounds();
+	owner_quota();
 	printf("PASS M3 portable: %u checks\n", checks);
 	return 0;
 }
